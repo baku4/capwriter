@@ -4,6 +4,8 @@ version = "0.1.0"
 authors = ["baku4 <bahkhun@gmail.com>"]
 description = "Cap aware vector serializer & deserializer"
 edition = "2021"
+readme = "README.md"
+license = "MIT"
 
 [dependencies]
 byteorder = "1.4.3"
