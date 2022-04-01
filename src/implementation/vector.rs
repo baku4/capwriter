@@ -13,6 +13,9 @@ impl Saveable for Vec<u8> {
     {
         (self as &[u8]).save_to(writer)
     }
+    fn size_of(&self) -> usize {
+        (self as &[u8]).size_of()
+    }
 }
 impl Loadable for Vec<u8> {
     fn load_from<R>(mut reader: R) -> Result<Self> where
@@ -38,6 +41,9 @@ impl Saveable for Vec<u16> {
         W: std::io::Write
     {
         (self as &[u16]).save_to(writer)
+    }
+    fn size_of(&self) -> usize {
+        (self as &[u16]).size_of()
     }
 }
 impl Loadable for Vec<u16> {
@@ -65,6 +71,9 @@ impl Saveable for Vec<u32> {
     {
         (self as &[u32]).save_to(writer)
     }
+    fn size_of(&self) -> usize {
+        (self as &[u32]).size_of()
+    }
 }
 impl Loadable for Vec<u32> {
     fn load_from<R>(mut reader: R) -> Result<Self> where
@@ -90,6 +99,9 @@ impl Saveable for Vec<u64> {
         W: std::io::Write
     {
         (self as &[u64]).save_to(writer)
+    }
+    fn size_of(&self) -> usize {
+        (self as &[u64]).size_of()
     }
 }
 impl Loadable for Vec<u64> {
@@ -117,6 +129,9 @@ impl Saveable for Vec<usize> {
     {
         (self as &[usize]).save_to(writer)
     }
+    fn size_of(&self) -> usize {
+        (self as &[usize]).size_of()
+    }
 }
 impl Loadable for Vec<usize> {
     fn load_from<R>(reader: R) -> Result<Self> where
@@ -139,6 +154,9 @@ impl Saveable for Vec<i16> {
         W: std::io::Write
     {
         (self as &[i16]).save_to(writer)
+    }
+    fn size_of(&self) -> usize {
+        (self as &[i16]).size_of()
     }
 }
 impl Loadable for Vec<i16> {
@@ -166,6 +184,9 @@ impl Saveable for Vec<i32> {
     {
         (self as &[i32]).save_to(writer)
     }
+    fn size_of(&self) -> usize {
+        (self as &[i32]).size_of()
+    }
 }
 impl Loadable for Vec<i32> {
     fn load_from<R>(mut reader: R) -> Result<Self> where
@@ -192,6 +213,9 @@ impl Saveable for Vec<i64> {
     {
         (self as &[i64]).save_to(writer)
     }
+    fn size_of(&self) -> usize {
+        (self as &[i64]).size_of()
+    }
 }
 impl Loadable for Vec<i64> {
     fn load_from<R>(mut reader: R) -> Result<Self> where
@@ -217,6 +241,9 @@ impl Saveable for Vec<isize> {
         W: std::io::Write
     {
         (self as &[isize]).save_to(writer)
+    }
+    fn size_of(&self) -> usize {
+        (self as &[isize]).size_of()
     }
 }
 impl Loadable for Vec<isize> {

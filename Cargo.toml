@@ -1,6 +1,6 @@
 [package]
 name = "capwriter"
-version = "0.1.0"
+version = "0.1.1"
 authors = ["baku4 <bahkhun@gmail.com>"]
 description = "Cap aware vector serializer & deserializer"
 edition = "2021"

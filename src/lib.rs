@@ -16,6 +16,7 @@ use std::io::{Write, Read};
 pub trait Saveable {
     fn save_to<W>(&self, writer: W) -> Result<()> where
         W: Write;
+    fn size_of(&self) -> usize;
 }
 
 pub trait Loadable {
