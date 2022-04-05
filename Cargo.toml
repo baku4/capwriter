@@ -1,6 +1,6 @@
 [package]
 name = "capwriter"
-version = "0.1.1"
+version = "0.1.2"
 authors = ["baku4 <bahkhun@gmail.com>"]
 description = "Cap aware vector serializer & deserializer"
 edition = "2021"
@@ -10,6 +10,7 @@ license = "MIT"
 [dependencies]
 byteorder = "1.4.3"
 anyhow = "1.0.53"
+bytemuck = "1.9.1"
 
 [dev-dependencies]
 criterion = "0.3.5"

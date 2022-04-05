@@ -5,6 +5,8 @@ use super::{
     Saveable, Loadable,
 };
 
+use bytemuck::cast_slice as as_u8_buf;
+
 
 #[cfg(target_pointer_width = "32")]
 const SIZE_OF_LENGTH: usize = 4;
@@ -42,9 +44,7 @@ impl Saveable for &[u16] {
         #[cfg(target_pointer_width = "64")]
         writer.write_u64::<EndianType>(self.len() as u64)?;
 
-        self.iter().for_each(|v| {
-            writer.write_u16::<EndianType>(*v);
-        });
+        writer.write_all(as_u8_buf(self))?;
 
         Ok(())
     }
@@ -65,9 +65,7 @@ impl Saveable for &[u32] {
         #[cfg(target_pointer_width = "64")]
         writer.write_u64::<EndianType>(self.len() as u64)?;
 
-        self.iter().for_each(|v| {
-            writer.write_u32::<EndianType>(*v);
-        });
+        writer.write_all(as_u8_buf(self))?;
 
         Ok(())
     }
@@ -88,9 +86,7 @@ impl Saveable for &[u64] {
         #[cfg(target_pointer_width = "64")]
         writer.write_u64::<EndianType>(self.len() as u64)?;
 
-        self.iter().for_each(|v| {
-            writer.write_u64::<EndianType>(*v);
-        });
+        writer.write_all(as_u8_buf(self))?;
 
         Ok(())
     }
@@ -111,12 +107,7 @@ impl Saveable for &[usize] {
         #[cfg(target_pointer_width = "64")]
         writer.write_u64::<EndianType>(self.len() as u64)?;
 
-        self.iter().for_each(|v| {
-            #[cfg(target_pointer_width = "32")]
-            writer.write_u32::<EndianType>(*v as u32);
-            #[cfg(target_pointer_width = "64")]
-            writer.write_u64::<EndianType>(*v as u64);
-        });
+        writer.write_all(as_u8_buf(self))?;
 
         Ok(())
     }
@@ -137,9 +128,7 @@ impl Saveable for &[i16] {
         #[cfg(target_pointer_width = "64")]
         writer.write_u64::<EndianType>(self.len() as u64)?;
 
-        self.iter().for_each(|v| {
-            writer.write_i16::<EndianType>(*v);
-        });
+        writer.write_all(as_u8_buf(self))?;
 
         Ok(())
     }
@@ -160,9 +149,7 @@ impl Saveable for &[i32] {
         #[cfg(target_pointer_width = "64")]
         writer.write_u64::<EndianType>(self.len() as u64)?;
 
-        self.iter().for_each(|v| {
-            writer.write_i32::<EndianType>(*v);
-        });
+        writer.write_all(as_u8_buf(self))?;
 
         Ok(())
     }
@@ -183,9 +170,7 @@ impl Saveable for &[i64] {
         #[cfg(target_pointer_width = "64")]
         writer.write_u64::<EndianType>(self.len() as u64)?;
 
-        self.iter().for_each(|v| {
-            writer.write_i64::<EndianType>(*v);
-        });
+        writer.write_all(as_u8_buf(self))?;
 
         Ok(())
     }
@@ -206,12 +191,7 @@ impl Saveable for &[isize] {
         #[cfg(target_pointer_width = "64")]
         writer.write_u64::<EndianType>(self.len() as u64)?;
 
-        self.iter().for_each(|v| {
-            #[cfg(target_pointer_width = "32")]
-            writer.write_i32::<EndianType>(*v as i32);
-            #[cfg(target_pointer_width = "64")]
-            writer.write_i64::<EndianType>(*v as i64);
-        });
+        writer.write_all(as_u8_buf(self))?;
 
         Ok(())
     }
