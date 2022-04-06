@@ -96,6 +96,27 @@ impl Saveable for &[u64] {
 }
 
 
+// u128
+impl Saveable for &[u128] {
+    #[allow(unused_must_use)]
+    fn save_to<W>(&self, mut writer: W) -> Result<()> where
+        W: std::io::Write
+    {
+        #[cfg(target_pointer_width = "32")]
+        writer.write_u32::<EndianType>(self.len() as u32)?;
+        #[cfg(target_pointer_width = "64")]
+        writer.write_u64::<EndianType>(self.len() as u64)?;
+
+        writer.write_all(as_u8_buf(self))?;
+
+        Ok(())
+    }
+    fn size_of(&self) -> usize {
+        8 * self.len() + SIZE_OF_LENGTH
+    }
+}
+
+
 // usize
 impl Saveable for &[usize] {
     #[allow(unused_must_use)]
@@ -113,6 +134,27 @@ impl Saveable for &[usize] {
     }
     fn size_of(&self) -> usize {
         SIZE_OF_LENGTH * self.len() + SIZE_OF_LENGTH
+    }
+}
+
+
+// i8
+impl Saveable for &[i8] {
+    #[allow(unused_must_use)]
+    fn save_to<W>(&self, mut writer: W) -> Result<()> where
+        W: std::io::Write
+    {
+        #[cfg(target_pointer_width = "32")]
+        writer.write_u32::<EndianType>(self.len() as u32)?;
+        #[cfg(target_pointer_width = "64")]
+        writer.write_u64::<EndianType>(self.len() as u64)?;
+
+        writer.write_all(as_u8_buf(self))?;
+
+        Ok(())
+    }
+    fn size_of(&self) -> usize {
+        self.len() + SIZE_OF_LENGTH
     }
 }
 
@@ -161,6 +203,27 @@ impl Saveable for &[i32] {
 
 // i64
 impl Saveable for &[i64] {
+    #[allow(unused_must_use)]
+    fn save_to<W>(&self, mut writer: W) -> Result<()> where
+        W: std::io::Write
+    {
+        #[cfg(target_pointer_width = "32")]
+        writer.write_u32::<EndianType>(self.len() as u32)?;
+        #[cfg(target_pointer_width = "64")]
+        writer.write_u64::<EndianType>(self.len() as u64)?;
+
+        writer.write_all(as_u8_buf(self))?;
+
+        Ok(())
+    }
+    fn size_of(&self) -> usize {
+        8 * self.len() + SIZE_OF_LENGTH
+    }
+}
+
+
+// i128
+impl Saveable for &[i128] {
     #[allow(unused_must_use)]
     fn save_to<W>(&self, mut writer: W) -> Result<()> where
         W: std::io::Write

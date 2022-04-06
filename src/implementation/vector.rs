@@ -57,7 +57,8 @@ impl Loadable for Vec<u16> {
         let len = reader.read_u64::<EndianType>()? as usize;
 
         let mut buffer = vec![0; len];
-        reader.read_u16_into::<EndianType>(&mut buffer)?;
+        let casted_buffer: &mut [u8] = bytemuck::cast_slice_mut(&mut buffer);
+        reader.read_exact(casted_buffer)?;
 
         Ok(buffer)
     }
@@ -86,7 +87,8 @@ impl Loadable for Vec<u32> {
         let len = reader.read_u64::<EndianType>()? as usize;
 
         let mut buffer = vec![0; len];
-        reader.read_u32_into::<EndianType>(&mut buffer)?;
+        let casted_buffer: &mut [u8] = bytemuck::cast_slice_mut(&mut buffer);
+        reader.read_exact(casted_buffer)?;
 
         Ok(buffer)
     }
@@ -115,7 +117,38 @@ impl Loadable for Vec<u64> {
         let len = reader.read_u64::<EndianType>()? as usize;
 
         let mut buffer = vec![0; len];
-        reader.read_u64_into::<EndianType>(&mut buffer)?;
+        let casted_buffer: &mut [u8] = bytemuck::cast_slice_mut(&mut buffer);
+        reader.read_exact(casted_buffer)?;
+
+        Ok(buffer)
+    }
+}
+
+
+// u128
+impl Saveable for Vec<u128> {
+    fn save_to<W>(&self, writer: W) -> Result<()> where
+        W: std::io::Write
+    {
+        (self as &[u128]).save_to(writer)
+    }
+    fn size_of(&self) -> usize {
+        (self as &[u128]).size_of()
+    }
+}
+impl Loadable for Vec<u128> {
+    fn load_from<R>(mut reader: R) -> Result<Self> where
+        R: std::io::Read,
+        Self: Sized,
+    {
+        #[cfg(target_pointer_width = "32")]
+        let len = reader.read_u32::<EndianType>()? as usize;
+        #[cfg(target_pointer_width = "64")]
+        let len = reader.read_u64::<EndianType>()? as usize;
+
+        let mut buffer = vec![0; len];
+        let casted_buffer: &mut [u8] = bytemuck::cast_slice_mut(&mut buffer);
+        reader.read_exact(casted_buffer)?;
 
         Ok(buffer)
     }
@@ -134,16 +167,50 @@ impl Saveable for Vec<usize> {
     }
 }
 impl Loadable for Vec<usize> {
-    fn load_from<R>(reader: R) -> Result<Self> where
+    fn load_from<R>(mut reader: R) -> Result<Self> where
         R: std::io::Read,
         Self: Sized,
     {
         #[cfg(target_pointer_width = "32")]
-        let buffer = Vec::<u32>::load_from(reader)?;
+        let len = reader.read_u32::<EndianType>()? as usize;
         #[cfg(target_pointer_width = "64")]
-        let buffer = Vec::<u64>::load_from(reader)?;
+        let len = reader.read_u64::<EndianType>()? as usize;
 
-        Ok(buffer.into_iter().map(|v| v as usize).collect())
+        let mut buffer = vec![0; len];
+        let casted_buffer: &mut [u8] = bytemuck::cast_slice_mut(&mut buffer);
+        reader.read_exact(casted_buffer)?;
+
+        Ok(buffer)
+    }
+}
+
+
+// i8
+impl Saveable for Vec<i8> {
+    fn save_to<W>(&self, writer: W) -> Result<()> where
+        W: std::io::Write
+    {
+        (self as &[i8]).save_to(writer)
+    }
+    fn size_of(&self) -> usize {
+        (self as &[i8]).size_of()
+    }
+}
+impl Loadable for Vec<i8> {
+    fn load_from<R>(mut reader: R) -> Result<Self> where
+        R: std::io::Read,
+        Self: Sized,
+    {
+        #[cfg(target_pointer_width = "32")]
+        let len = reader.read_u32::<EndianType>()? as usize;
+        #[cfg(target_pointer_width = "64")]
+        let len = reader.read_u64::<EndianType>()? as usize;
+
+        let mut buffer = vec![0; len];
+        let casted_buffer: &mut [u8] = bytemuck::cast_slice_mut(&mut buffer);
+        reader.read_exact(casted_buffer)?;
+
+        Ok(buffer)
     }
 }
 
@@ -170,7 +237,8 @@ impl Loadable for Vec<i16> {
         let len = reader.read_u64::<EndianType>()? as usize;
 
         let mut buffer = vec![0; len];
-        reader.read_i16_into::<EndianType>(&mut buffer)?;
+        let casted_buffer: &mut [u8] = bytemuck::cast_slice_mut(&mut buffer);
+        reader.read_exact(casted_buffer)?;
 
         Ok(buffer)
     }
@@ -199,7 +267,8 @@ impl Loadable for Vec<i32> {
         let len = reader.read_u64::<EndianType>()? as usize;
 
         let mut buffer = vec![0; len];
-        reader.read_i32_into::<EndianType>(&mut buffer)?;
+        let casted_buffer: &mut [u8] = bytemuck::cast_slice_mut(&mut buffer);
+        reader.read_exact(casted_buffer)?;
 
         Ok(buffer)
     }
@@ -228,7 +297,38 @@ impl Loadable for Vec<i64> {
         let len = reader.read_u64::<EndianType>()? as usize;
 
         let mut buffer = vec![0; len];
-        reader.read_i64_into::<EndianType>(&mut buffer)?;
+        let casted_buffer: &mut [u8] = bytemuck::cast_slice_mut(&mut buffer);
+        reader.read_exact(casted_buffer)?;
+
+        Ok(buffer)
+    }
+}
+
+
+// i128
+impl Saveable for Vec<i128> {
+    fn save_to<W>(&self, writer: W) -> Result<()> where
+        W: std::io::Write
+    {
+        (self as &[i128]).save_to(writer)
+    }
+    fn size_of(&self) -> usize {
+        (self as &[i128]).size_of()
+    }
+}
+impl Loadable for Vec<i128> {
+    fn load_from<R>(mut reader: R) -> Result<Self> where
+        R: std::io::Read,
+        Self: Sized,
+    {
+        #[cfg(target_pointer_width = "32")]
+        let len = reader.read_u32::<EndianType>()? as usize;
+        #[cfg(target_pointer_width = "64")]
+        let len = reader.read_u64::<EndianType>()? as usize;
+
+        let mut buffer = vec![0; len];
+        let casted_buffer: &mut [u8] = bytemuck::cast_slice_mut(&mut buffer);
+        reader.read_exact(casted_buffer)?;
 
         Ok(buffer)
     }
@@ -247,15 +347,172 @@ impl Saveable for Vec<isize> {
     }
 }
 impl Loadable for Vec<isize> {
-    fn load_from<R>(reader: R) -> Result<Self> where
+    fn load_from<R>(mut reader: R) -> Result<Self> where
         R: std::io::Read,
         Self: Sized,
     {
         #[cfg(target_pointer_width = "32")]
-        let buffer = Vec::<i32>::load_from(reader)?;
+        let len = reader.read_u32::<EndianType>()? as usize;
         #[cfg(target_pointer_width = "64")]
-        let buffer = Vec::<i64>::load_from(reader)?;
+        let len = reader.read_u64::<EndianType>()? as usize;
 
-        Ok(buffer.into_iter().map(|v| v as isize).collect())
+        let mut buffer = vec![0; len];
+        let casted_buffer: &mut [u8] = bytemuck::cast_slice_mut(&mut buffer);
+        reader.read_exact(casted_buffer)?;
+
+        Ok(buffer)
+    }
+}
+
+// Tests
+#[cfg(test)]
+mod tests {
+    use crate::{Saveable, Loadable};
+
+    #[test]
+    fn test_all_vector() {
+        use rand::Rng;
+        let mut rng = rand::thread_rng();
+
+        let vec_len_list: Vec<usize> = (0..10).map(|v| 2_i32.pow(v) as usize).collect();
+        let n = 100;
+
+        for len in vec_len_list {
+            for _ in 0..n {
+                // u8
+                {
+                    let vec: Vec<u8> = (0..len).map(|_| { rng.gen() }).collect();
+                    let mut buffer = Vec::new();
+
+                    vec.save_to(&mut buffer).unwrap();
+
+                    let loaded = Vec::load_from(std::io::Cursor::new(buffer)).unwrap();
+
+                    assert_eq!(vec, loaded);
+                }
+                // u16
+                {
+                    let vec: Vec<u16> = (0..len).map(|_| { rng.gen() }).collect();
+                    let mut buffer = Vec::new();
+
+                    vec.save_to(&mut buffer).unwrap();
+
+                    let loaded = Vec::load_from(std::io::Cursor::new(buffer)).unwrap();
+
+                    assert_eq!(vec, loaded);
+                }
+                // u32
+                {
+                    let vec: Vec<u32> = (0..len).map(|_| { rng.gen() }).collect();
+                    let mut buffer = Vec::new();
+
+                    vec.save_to(&mut buffer).unwrap();
+
+                    let loaded = Vec::load_from(std::io::Cursor::new(buffer)).unwrap();
+
+                    assert_eq!(vec, loaded);
+                }
+                // u64
+                {
+                    let vec: Vec<u64> = (0..len).map(|_| { rng.gen() }).collect();
+                    let mut buffer = Vec::new();
+
+                    vec.save_to(&mut buffer).unwrap();
+
+                    let loaded = Vec::load_from(std::io::Cursor::new(buffer)).unwrap();
+
+                    assert_eq!(vec, loaded);
+                }
+                // u128
+                {
+                    let vec: Vec<u128> = (0..len).map(|_| { rng.gen() }).collect();
+                    let mut buffer = Vec::new();
+
+                    vec.save_to(&mut buffer).unwrap();
+
+                    let loaded = Vec::load_from(std::io::Cursor::new(buffer)).unwrap();
+
+                    assert_eq!(vec, loaded);
+                }
+                // usize
+                {
+                    let vec: Vec<usize> = (0..len).map(|_| { rng.gen() }).collect();
+                    let mut buffer = Vec::new();
+
+                    vec.save_to(&mut buffer).unwrap();
+
+                    let loaded = Vec::load_from(std::io::Cursor::new(buffer)).unwrap();
+
+                    assert_eq!(vec, loaded);
+                }
+
+                // i8
+                {
+                    let vec: Vec<i8> = (0..len).map(|_| { rng.gen() }).collect();
+                    let mut buffer = Vec::new();
+
+                    vec.save_to(&mut buffer).unwrap();
+
+                    let loaded = Vec::load_from(std::io::Cursor::new(buffer)).unwrap();
+
+                    assert_eq!(vec, loaded);
+                }
+                // i16
+                {
+                    let vec: Vec<i16> = (0..len).map(|_| { rng.gen() }).collect();
+                    let mut buffer = Vec::new();
+
+                    vec.save_to(&mut buffer).unwrap();
+
+                    let loaded = Vec::load_from(std::io::Cursor::new(buffer)).unwrap();
+
+                    assert_eq!(vec, loaded);
+                }
+                // i32
+                {
+                    let vec: Vec<i32> = (0..len).map(|_| { rng.gen() }).collect();
+                    let mut buffer = Vec::new();
+
+                    vec.save_to(&mut buffer).unwrap();
+
+                    let loaded = Vec::load_from(std::io::Cursor::new(buffer)).unwrap();
+
+                    assert_eq!(vec, loaded);
+                }
+                // i64
+                {
+                    let vec: Vec<i64> = (0..len).map(|_| { rng.gen() }).collect();
+                    let mut buffer = Vec::new();
+
+                    vec.save_to(&mut buffer).unwrap();
+
+                    let loaded = Vec::load_from(std::io::Cursor::new(buffer)).unwrap();
+
+                    assert_eq!(vec, loaded);
+                }
+                // i128
+                {
+                    let vec: Vec<i128> = (0..len).map(|_| { rng.gen() }).collect();
+                    let mut buffer = Vec::new();
+
+                    vec.save_to(&mut buffer).unwrap();
+
+                    let loaded = Vec::load_from(std::io::Cursor::new(buffer)).unwrap();
+
+                    assert_eq!(vec, loaded);
+                }
+                // isize
+                {
+                    let vec: Vec<isize> = (0..len).map(|_| { rng.gen() }).collect();
+                    let mut buffer = Vec::new();
+
+                    vec.save_to(&mut buffer).unwrap();
+
+                    let loaded = Vec::load_from(std::io::Cursor::new(buffer)).unwrap();
+
+                    assert_eq!(vec, loaded);
+                }
+            }
+        }
     }
 }
