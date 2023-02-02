@@ -1,15 +1,14 @@
 #[allow(unused_imports)]
 use super::{
-    Result, error_msg,
     EndianType, WriteBytesExt, ReadBytesExt,
     Saveable, Loadable,
 };
-
+use std::io::{Read, Write, Error};
 
 // u8
 impl Saveable for Vec<u8> {
-    fn save_to<W>(&self, writer: W) -> Result<()> where
-        W: std::io::Write
+    fn save_to<W>(&self, writer: W) -> Result<(), Error> where
+        W: Write,
     {
         (self as &[u8]).save_to(writer)
     }
@@ -18,8 +17,8 @@ impl Saveable for Vec<u8> {
     }
 }
 impl Loadable for Vec<u8> {
-    fn load_from<R>(mut reader: R) -> Result<Self> where
-        R: std::io::Read,
+    fn load_from<R>(mut reader: R) -> Result<Self, Error> where
+        R: Read,
         Self: Sized,
     {
         #[cfg(target_pointer_width = "32")]
@@ -37,8 +36,8 @@ impl Loadable for Vec<u8> {
 
 // u16
 impl Saveable for Vec<u16> {
-    fn save_to<W>(&self, writer: W) -> Result<()> where
-        W: std::io::Write
+    fn save_to<W>(&self, writer: W) -> Result<(), Error> where
+        W: Write
     {
         (self as &[u16]).save_to(writer)
     }
@@ -47,8 +46,8 @@ impl Saveable for Vec<u16> {
     }
 }
 impl Loadable for Vec<u16> {
-    fn load_from<R>(mut reader: R) -> Result<Self> where
-        R: std::io::Read,
+    fn load_from<R>(mut reader: R) -> Result<Self, Error> where
+        R: Read,
         Self: Sized,
     {
         #[cfg(target_pointer_width = "32")]
@@ -67,8 +66,8 @@ impl Loadable for Vec<u16> {
 
 // u32
 impl Saveable for Vec<u32> {
-    fn save_to<W>(&self, writer: W) -> Result<()> where
-        W: std::io::Write
+    fn save_to<W>(&self, writer: W) -> Result<(), Error> where
+        W: Write
     {
         (self as &[u32]).save_to(writer)
     }
@@ -77,8 +76,8 @@ impl Saveable for Vec<u32> {
     }
 }
 impl Loadable for Vec<u32> {
-    fn load_from<R>(mut reader: R) -> Result<Self> where
-        R: std::io::Read,
+    fn load_from<R>(mut reader: R) -> Result<Self, Error> where
+        R: Read,
         Self: Sized,
     {
         #[cfg(target_pointer_width = "32")]
@@ -97,8 +96,8 @@ impl Loadable for Vec<u32> {
 
 // u64
 impl Saveable for Vec<u64> {
-    fn save_to<W>(&self, writer: W) -> Result<()> where
-        W: std::io::Write
+    fn save_to<W>(&self, writer: W) -> Result<(), Error> where
+        W: Write
     {
         (self as &[u64]).save_to(writer)
     }
@@ -107,8 +106,8 @@ impl Saveable for Vec<u64> {
     }
 }
 impl Loadable for Vec<u64> {
-    fn load_from<R>(mut reader: R) -> Result<Self> where
-        R: std::io::Read,
+    fn load_from<R>(mut reader: R) -> Result<Self, Error> where
+        R: Read,
         Self: Sized,
     {
         #[cfg(target_pointer_width = "32")]
@@ -127,8 +126,8 @@ impl Loadable for Vec<u64> {
 
 // u128
 impl Saveable for Vec<u128> {
-    fn save_to<W>(&self, writer: W) -> Result<()> where
-        W: std::io::Write
+    fn save_to<W>(&self, writer: W) -> Result<(), Error> where
+        W: Write
     {
         (self as &[u128]).save_to(writer)
     }
@@ -137,8 +136,8 @@ impl Saveable for Vec<u128> {
     }
 }
 impl Loadable for Vec<u128> {
-    fn load_from<R>(mut reader: R) -> Result<Self> where
-        R: std::io::Read,
+    fn load_from<R>(mut reader: R) -> Result<Self, Error> where
+        R: Read,
         Self: Sized,
     {
         #[cfg(target_pointer_width = "32")]
@@ -157,8 +156,8 @@ impl Loadable for Vec<u128> {
 
 // usize
 impl Saveable for Vec<usize> {
-    fn save_to<W>(&self, writer: W) -> Result<()> where
-        W: std::io::Write
+    fn save_to<W>(&self, writer: W) -> Result<(), Error> where
+        W: Write
     {
         (self as &[usize]).save_to(writer)
     }
@@ -167,8 +166,8 @@ impl Saveable for Vec<usize> {
     }
 }
 impl Loadable for Vec<usize> {
-    fn load_from<R>(mut reader: R) -> Result<Self> where
-        R: std::io::Read,
+    fn load_from<R>(mut reader: R) -> Result<Self, Error> where
+        R: Read,
         Self: Sized,
     {
         #[cfg(target_pointer_width = "32")]
@@ -187,8 +186,8 @@ impl Loadable for Vec<usize> {
 
 // i8
 impl Saveable for Vec<i8> {
-    fn save_to<W>(&self, writer: W) -> Result<()> where
-        W: std::io::Write
+    fn save_to<W>(&self, writer: W) -> Result<(), Error> where
+        W: Write
     {
         (self as &[i8]).save_to(writer)
     }
@@ -197,8 +196,8 @@ impl Saveable for Vec<i8> {
     }
 }
 impl Loadable for Vec<i8> {
-    fn load_from<R>(mut reader: R) -> Result<Self> where
-        R: std::io::Read,
+    fn load_from<R>(mut reader: R) -> Result<Self, Error> where
+        R: Read,
         Self: Sized,
     {
         #[cfg(target_pointer_width = "32")]
@@ -217,8 +216,8 @@ impl Loadable for Vec<i8> {
 
 // i16
 impl Saveable for Vec<i16> {
-    fn save_to<W>(&self, writer: W) -> Result<()> where
-        W: std::io::Write
+    fn save_to<W>(&self, writer: W) -> Result<(), Error> where
+        W: Write
     {
         (self as &[i16]).save_to(writer)
     }
@@ -227,8 +226,8 @@ impl Saveable for Vec<i16> {
     }
 }
 impl Loadable for Vec<i16> {
-    fn load_from<R>(mut reader: R) -> Result<Self> where
-        R: std::io::Read,
+    fn load_from<R>(mut reader: R) -> Result<Self, Error> where
+        R: Read,
         Self: Sized,
     {
         #[cfg(target_pointer_width = "32")]
@@ -247,8 +246,8 @@ impl Loadable for Vec<i16> {
 
 // i32
 impl Saveable for Vec<i32> {
-    fn save_to<W>(&self, writer: W) -> Result<()> where
-        W: std::io::Write
+    fn save_to<W>(&self, writer: W) -> Result<(), Error> where
+        W: Write
     {
         (self as &[i32]).save_to(writer)
     }
@@ -257,8 +256,8 @@ impl Saveable for Vec<i32> {
     }
 }
 impl Loadable for Vec<i32> {
-    fn load_from<R>(mut reader: R) -> Result<Self> where
-        R: std::io::Read,
+    fn load_from<R>(mut reader: R) -> Result<Self, Error> where
+        R: Read,
         Self: Sized,
     {
         #[cfg(target_pointer_width = "32")]
@@ -277,8 +276,8 @@ impl Loadable for Vec<i32> {
 
 // i64
 impl Saveable for Vec<i64> {
-    fn save_to<W>(&self, writer: W) -> Result<()> where
-        W: std::io::Write
+    fn save_to<W>(&self, writer: W) -> Result<(), Error> where
+        W: Write
     {
         (self as &[i64]).save_to(writer)
     }
@@ -287,8 +286,8 @@ impl Saveable for Vec<i64> {
     }
 }
 impl Loadable for Vec<i64> {
-    fn load_from<R>(mut reader: R) -> Result<Self> where
-        R: std::io::Read,
+    fn load_from<R>(mut reader: R) -> Result<Self, Error> where
+        R: Read,
         Self: Sized,
     {
         #[cfg(target_pointer_width = "32")]
@@ -307,8 +306,8 @@ impl Loadable for Vec<i64> {
 
 // i128
 impl Saveable for Vec<i128> {
-    fn save_to<W>(&self, writer: W) -> Result<()> where
-        W: std::io::Write
+    fn save_to<W>(&self, writer: W) -> Result<(), Error> where
+        W: Write
     {
         (self as &[i128]).save_to(writer)
     }
@@ -317,8 +316,8 @@ impl Saveable for Vec<i128> {
     }
 }
 impl Loadable for Vec<i128> {
-    fn load_from<R>(mut reader: R) -> Result<Self> where
-        R: std::io::Read,
+    fn load_from<R>(mut reader: R) -> Result<Self, Error> where
+        R: Read,
         Self: Sized,
     {
         #[cfg(target_pointer_width = "32")]
@@ -337,8 +336,8 @@ impl Loadable for Vec<i128> {
 
 // isize
 impl Saveable for Vec<isize> {
-    fn save_to<W>(&self, writer: W) -> Result<()> where
-        W: std::io::Write
+    fn save_to<W>(&self, writer: W) -> Result<(), Error> where
+        W: Write
     {
         (self as &[isize]).save_to(writer)
     }
@@ -347,8 +346,8 @@ impl Saveable for Vec<isize> {
     }
 }
 impl Loadable for Vec<isize> {
-    fn load_from<R>(mut reader: R) -> Result<Self> where
-        R: std::io::Read,
+    fn load_from<R>(mut reader: R) -> Result<Self, Error> where
+        R: Read,
         Self: Sized,
     {
         #[cfg(target_pointer_width = "32")]

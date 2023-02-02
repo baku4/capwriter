@@ -1,12 +1,10 @@
 #[allow(unused_imports)]
 use super::{
-    Result, error_msg,
     EndianType, WriteBytesExt, ReadBytesExt,
     Saveable, Loadable,
 };
-
 use bytemuck::cast_slice as as_u8_buf;
-
+use std::io::Error;
 
 #[cfg(target_pointer_width = "32")]
 const SIZE_OF_LENGTH: usize = 4;
@@ -16,7 +14,7 @@ const SIZE_OF_LENGTH: usize = 8;
 // u8
 impl Saveable for &[u8] {
     #[allow(unused_must_use)]
-    fn save_to<W>(&self, mut writer: W) -> Result<()> where
+    fn save_to<W>(&self, mut writer: W) -> Result<(), Error> where
         W: std::io::Write
     {
         #[cfg(target_pointer_width = "32")]
@@ -36,7 +34,7 @@ impl Saveable for &[u8] {
 // u16
 impl Saveable for &[u16] {
     #[allow(unused_must_use)]
-    fn save_to<W>(&self, mut writer: W) -> Result<()> where
+    fn save_to<W>(&self, mut writer: W) -> Result<(), Error> where
         W: std::io::Write
     {
         #[cfg(target_pointer_width = "32")]
@@ -57,7 +55,7 @@ impl Saveable for &[u16] {
 // u32
 impl Saveable for &[u32] {
     #[allow(unused_must_use)]
-    fn save_to<W>(&self, mut writer: W) -> Result<()> where
+    fn save_to<W>(&self, mut writer: W) -> Result<(), Error> where
         W: std::io::Write
     {
         #[cfg(target_pointer_width = "32")]
@@ -78,7 +76,7 @@ impl Saveable for &[u32] {
 // u64
 impl Saveable for &[u64] {
     #[allow(unused_must_use)]
-    fn save_to<W>(&self, mut writer: W) -> Result<()> where
+    fn save_to<W>(&self, mut writer: W) -> Result<(), Error> where
         W: std::io::Write
     {
         #[cfg(target_pointer_width = "32")]
@@ -99,7 +97,7 @@ impl Saveable for &[u64] {
 // u128
 impl Saveable for &[u128] {
     #[allow(unused_must_use)]
-    fn save_to<W>(&self, mut writer: W) -> Result<()> where
+    fn save_to<W>(&self, mut writer: W) -> Result<(), Error> where
         W: std::io::Write
     {
         #[cfg(target_pointer_width = "32")]
@@ -120,7 +118,7 @@ impl Saveable for &[u128] {
 // usize
 impl Saveable for &[usize] {
     #[allow(unused_must_use)]
-    fn save_to<W>(&self, mut writer: W) -> Result<()> where
+    fn save_to<W>(&self, mut writer: W) -> Result<(), Error> where
         W: std::io::Write
     {
         #[cfg(target_pointer_width = "32")]
@@ -141,7 +139,7 @@ impl Saveable for &[usize] {
 // i8
 impl Saveable for &[i8] {
     #[allow(unused_must_use)]
-    fn save_to<W>(&self, mut writer: W) -> Result<()> where
+    fn save_to<W>(&self, mut writer: W) -> Result<(), Error> where
         W: std::io::Write
     {
         #[cfg(target_pointer_width = "32")]
@@ -162,7 +160,7 @@ impl Saveable for &[i8] {
 // i16
 impl Saveable for &[i16] {
     #[allow(unused_must_use)]
-    fn save_to<W>(&self, mut writer: W) -> Result<()> where
+    fn save_to<W>(&self, mut writer: W) -> Result<(), Error> where
         W: std::io::Write
     {
         #[cfg(target_pointer_width = "32")]
@@ -183,7 +181,7 @@ impl Saveable for &[i16] {
 // i32
 impl Saveable for &[i32] {
     #[allow(unused_must_use)]
-    fn save_to<W>(&self, mut writer: W) -> Result<()> where
+    fn save_to<W>(&self, mut writer: W) -> Result<(), Error> where
         W: std::io::Write
     {
         #[cfg(target_pointer_width = "32")]
@@ -204,7 +202,7 @@ impl Saveable for &[i32] {
 // i64
 impl Saveable for &[i64] {
     #[allow(unused_must_use)]
-    fn save_to<W>(&self, mut writer: W) -> Result<()> where
+    fn save_to<W>(&self, mut writer: W) -> Result<(), Error> where
         W: std::io::Write
     {
         #[cfg(target_pointer_width = "32")]
@@ -225,7 +223,7 @@ impl Saveable for &[i64] {
 // i128
 impl Saveable for &[i128] {
     #[allow(unused_must_use)]
-    fn save_to<W>(&self, mut writer: W) -> Result<()> where
+    fn save_to<W>(&self, mut writer: W) -> Result<(), Error> where
         W: std::io::Write
     {
         #[cfg(target_pointer_width = "32")]
@@ -246,7 +244,7 @@ impl Saveable for &[i128] {
 // isize
 impl Saveable for &[isize] {
     #[allow(unused_must_use)]
-    fn save_to<W>(&self, mut writer: W) -> Result<()> where
+    fn save_to<W>(&self, mut writer: W) -> Result<(), Error> where
         W: std::io::Write
     {
         #[cfg(target_pointer_width = "32")]

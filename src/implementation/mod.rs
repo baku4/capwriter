@@ -1,5 +1,4 @@
 use super::{
-    Result, error_msg,
     EndianType, WriteBytesExt, ReadBytesExt,
     Saveable, Loadable,
 };
