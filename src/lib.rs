@@ -6,12 +6,12 @@ use byteorder::{ReadBytesExt, WriteBytesExt};
 
 // Requirements
 use std::io::{Write, Read, Error};
-pub trait Saveable {
+pub trait Save {
     fn save_to<W>(&self, writer: W) -> Result<(), Error> where
         W: Write;
-    fn size_of(&self) -> usize;
+    fn to_be_saved_size(&self) -> usize;
 }
-pub trait Loadable {
+pub trait Load {
     fn load_from<R>(reader: R) -> Result<Self, Error> where
         R: Read,
         Self: Sized;

@@ -1,15 +1,15 @@
 [package]
 name = "capwriter"
-version = "0.1.4"
+version = "0.2.0"
 authors = ["baku4 <bahkhun@gmail.com>"]
-description = "Cap aware vector serializer & deserializer"
+description = "Fast saving and loading with annotating cap for vector and slice"
 edition = "2021"
 readme = "README.md"
 license = "MIT"
 
 [dependencies]
 byteorder = "1.4.3"
-bytemuck = "1.9.1"
+bytemuck = "1.13.0"
 
 [dev-dependencies]
 rand = "0.8.5"

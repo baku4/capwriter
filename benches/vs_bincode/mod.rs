@@ -6,7 +6,7 @@ use criterion::{
 
 // Capwriter
 
-use capwriter::{Saveable, Loadable};
+use capwriter::{Save, Load};
 
 #[inline]
 fn save_usize_vec_using_capwriter(vec: &[usize]) -> Vec<u8> {
