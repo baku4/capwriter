@@ -8,14 +8,14 @@ readme = "README.md"
 license = "MIT"
 
 [dependencies]
-byteorder = "1.4.3"
-bytemuck = "1.13.0"
+byteorder = "1.5"
+bytemuck = "1.22"
 
 [dev-dependencies]
 rand = "0.8.5"
 criterion = "0.3.5"
 serde = "1.0.136"
-bincode = "1.3.3"
+bincode = { version="2.0", features=["std"] }
 
 [[bench]]
 name = "benchmark"

@@ -12,9 +12,7 @@ fn usage_on_readme() {
     assert_eq!(vec_to_save.to_be_saved_size(), buffer.len()); // size can be estimated
     
     // (2) Load
-    let vec_loaded = Vec::<i32>::load_from(
-        std::io::Cursor::new(buffer)
-    ).unwrap();
+    let vec_loaded = Vec::<i32>::load_from(&mut &buffer[..]).unwrap();
     
     assert_eq!(vec_to_save, vec_loaded);
 }
@@ -37,7 +35,7 @@ fn are_equal_saved_and_loaded_for_all_vector() {
 
                 vec.save_to(&mut buffer).unwrap();
 
-                let loaded = Vec::load_from(std::io::Cursor::new(buffer)).unwrap();
+                let loaded = Vec::load_from(&mut &buffer[..]).unwrap();
 
                 assert_eq!(vec, loaded);
             }
@@ -48,7 +46,7 @@ fn are_equal_saved_and_loaded_for_all_vector() {
 
                 vec.save_to(&mut buffer).unwrap();
 
-                let loaded = Vec::load_from(std::io::Cursor::new(buffer)).unwrap();
+                let loaded = Vec::load_from(&mut &buffer[..]).unwrap();
 
                 assert_eq!(vec, loaded);
             }
@@ -59,7 +57,7 @@ fn are_equal_saved_and_loaded_for_all_vector() {
 
                 vec.save_to(&mut buffer).unwrap();
 
-                let loaded = Vec::load_from(std::io::Cursor::new(buffer)).unwrap();
+                let loaded = Vec::load_from(&mut &buffer[..]).unwrap();
 
                 assert_eq!(vec, loaded);
             }
@@ -70,7 +68,7 @@ fn are_equal_saved_and_loaded_for_all_vector() {
 
                 vec.save_to(&mut buffer).unwrap();
 
-                let loaded = Vec::load_from(std::io::Cursor::new(buffer)).unwrap();
+                let loaded = Vec::load_from(&mut &buffer[..]).unwrap();
 
                 assert_eq!(vec, loaded);
             }
@@ -81,7 +79,7 @@ fn are_equal_saved_and_loaded_for_all_vector() {
 
                 vec.save_to(&mut buffer).unwrap();
 
-                let loaded = Vec::load_from(std::io::Cursor::new(buffer)).unwrap();
+                let loaded = Vec::load_from(&mut &buffer[..]).unwrap();
 
                 assert_eq!(vec, loaded);
             }
@@ -92,7 +90,7 @@ fn are_equal_saved_and_loaded_for_all_vector() {
 
                 vec.save_to(&mut buffer).unwrap();
 
-                let loaded = Vec::load_from(std::io::Cursor::new(buffer)).unwrap();
+                let loaded = Vec::load_from(&mut &buffer[..]).unwrap();
 
                 assert_eq!(vec, loaded);
             }
@@ -104,7 +102,7 @@ fn are_equal_saved_and_loaded_for_all_vector() {
 
                 vec.save_to(&mut buffer).unwrap();
 
-                let loaded = Vec::load_from(std::io::Cursor::new(buffer)).unwrap();
+                let loaded = Vec::load_from(&mut &buffer[..]).unwrap();
 
                 assert_eq!(vec, loaded);
             }
@@ -115,7 +113,7 @@ fn are_equal_saved_and_loaded_for_all_vector() {
 
                 vec.save_to(&mut buffer).unwrap();
 
-                let loaded = Vec::load_from(std::io::Cursor::new(buffer)).unwrap();
+                let loaded = Vec::load_from(&mut &buffer[..]).unwrap();
 
                 assert_eq!(vec, loaded);
             }
@@ -126,7 +124,7 @@ fn are_equal_saved_and_loaded_for_all_vector() {
 
                 vec.save_to(&mut buffer).unwrap();
 
-                let loaded = Vec::load_from(std::io::Cursor::new(buffer)).unwrap();
+                let loaded = Vec::load_from(&mut &buffer[..]).unwrap();
 
                 assert_eq!(vec, loaded);
             }
@@ -137,7 +135,7 @@ fn are_equal_saved_and_loaded_for_all_vector() {
 
                 vec.save_to(&mut buffer).unwrap();
 
-                let loaded = Vec::load_from(std::io::Cursor::new(buffer)).unwrap();
+                let loaded = Vec::load_from(&mut &buffer[..]).unwrap();
 
                 assert_eq!(vec, loaded);
             }
@@ -148,7 +146,7 @@ fn are_equal_saved_and_loaded_for_all_vector() {
 
                 vec.save_to(&mut buffer).unwrap();
 
-                let loaded = Vec::load_from(std::io::Cursor::new(buffer)).unwrap();
+                let loaded = Vec::load_from(&mut &buffer[..]).unwrap();
 
                 assert_eq!(vec, loaded);
             }
@@ -159,7 +157,7 @@ fn are_equal_saved_and_loaded_for_all_vector() {
 
                 vec.save_to(&mut buffer).unwrap();
 
-                let loaded = Vec::load_from(std::io::Cursor::new(buffer)).unwrap();
+                let loaded = Vec::load_from(&mut &buffer[..]).unwrap();
 
                 assert_eq!(vec, loaded);
             }

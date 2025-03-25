@@ -6,7 +6,7 @@ use bytemuck::{
 use std::io::{Read, Write, Error};
 
 impl<T: Pod> Save for Vec<T> {
-    fn save_to<W>(&self, writer: W) -> Result<(), Error> where
+    fn save_to<W>(&self, writer: &mut W) -> Result<(), Error> where
         W: Write,
     {
         (self as &[T]).save_to(writer)
@@ -16,7 +16,7 @@ impl<T: Pod> Save for Vec<T> {
     }
 }
 impl<T: Pod> Load for Vec<T> {
-    fn load_from<R>(mut reader: R) -> Result<Self, Error> where
+    fn load_from<R>(reader: &mut R) -> Result<Self, Error> where
         R: Read,
         Self: Sized,
     {

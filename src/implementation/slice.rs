@@ -11,7 +11,7 @@ const SIZE_OF_LENGTH: usize = 4;
 const SIZE_OF_LENGTH: usize = 8;
 
 impl<T: Pod> Save for &[T] {
-    fn save_to<W>(&self, mut writer: W) -> Result<(), Error> where
+    fn save_to<W>(&self, writer: &mut W) -> Result<(), Error> where
         W: Write
     {
         #[cfg(target_pointer_width = "32")]

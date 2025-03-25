@@ -5,7 +5,6 @@ use criterion::{
 
 
 // Capwriter
-
 use capwriter::{Save, Load};
 
 #[inline]
@@ -17,23 +16,24 @@ fn save_usize_vec_using_capwriter(vec: &[usize]) -> Vec<u8> {
 
 #[inline]
 fn load_usize_vec_using_capwriter(buffer: &[u8]) -> Vec<usize> {
-    let loaded = Vec::<usize>::load_from(buffer).unwrap();
+    let loaded = Vec::<usize>::load_from(&mut &buffer[..]).unwrap();
     loaded
 }
 
 // Bincode
-
-use bincode::{serialize, deserialize};
+use bincode::{encode_into_std_write, decode_from_std_read};
+use bincode::config::standard;
 
 #[inline]
 fn save_usize_vec_using_bincode(vec: &[usize]) -> Vec<u8> {
-    let encoded = serialize(vec).unwrap();
-    encoded
+    let mut buffer: Vec<u8> = Vec::new();
+    encode_into_std_write(vec, &mut buffer, standard()).unwrap();
+    buffer
 }
 
 #[inline]
 fn load_usize_vec_using_bincode(buffer: &[u8]) -> Vec<usize> {
-    let loaded = deserialize(buffer).unwrap();
+    let loaded = decode_from_std_read(&mut &buffer[..], standard()).unwrap();
     loaded
 }
 
