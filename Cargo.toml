@@ -1,6 +1,6 @@
 [package]
 name = "capwriter"
-version = "0.3.0"
+version = "0.3.1"
 authors = ["baku4 <bahkhun@gmail.com>"]
 description = "Fast saving and loading with annotating cap for vector and slice"
 edition = "2021"
