@@ -94,7 +94,6 @@ fn are_equal_saved_and_loaded_for_array() {
             ($ty:ty, [ $($size:literal),+ ]) => {
                 $(
                     {
-                        // 여기서 $size는 컴파일 타임 상수
                         let array: [$ty; $size] = [rng.gen(); $size];
                         let mut buffer = Vec::new();
                         array.save_to(&mut buffer).unwrap();
@@ -118,4 +117,34 @@ fn are_equal_saved_and_loaded_for_array() {
         test!(i128, [1, 2, 4, 8, 16, 32, 64]);
         test!(isize, [1, 2, 4, 8, 16, 32, 64]);
     }
+}
+
+#[test]
+fn is_accurate_to_be_saved_size_for_array() {
+    macro_rules! test {
+        ($ty:ty, [ $($size:literal),+ ]) => {
+            $(
+                {
+                    let array: [$ty; $size] = [0; $size];
+                    let mut buffer = Vec::new();
+                    array.save_to(&mut buffer).unwrap();
+
+                    assert_eq!(array.to_be_saved_size(), buffer.len());
+                }
+            )*
+        }
+    }
+
+    test!(u8, [1, 2, 4, 8, 16, 32, 64]);
+    test!(u16, [1, 2, 4, 8, 16, 32, 64]);
+    test!(u32, [1, 2, 4, 8, 16, 32, 64]);
+    test!(u64, [1, 2, 4, 8, 16, 32, 64]);
+    test!(u128, [1, 2, 4, 8, 16, 32, 64]);
+    test!(usize, [1, 2, 4, 8, 16, 32, 64]);
+    test!(i8, [1, 2, 4, 8, 16, 32, 64]);
+    test!(i16, [1, 2, 4, 8, 16, 32, 64]);
+    test!(i32, [1, 2, 4, 8, 16, 32, 64]);
+    test!(i64, [1, 2, 4, 8, 16, 32, 64]);
+    test!(i128, [1, 2, 4, 8, 16, 32, 64]);
+    test!(isize, [1, 2, 4, 8, 16, 32, 64]);
 }
