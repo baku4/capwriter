@@ -1,22 +1,8 @@
-#[cfg(target_endian = "little")]
-type EndianType = byteorder::LittleEndian;
-#[cfg(target_endian = "big")]
-type EndianType = byteorder::BigEndian;
-use byteorder::{ReadBytesExt, WriteBytesExt};
+// TODO: cap을 무조건 u64로 저장한다는걸 README에 명시해야함. 그 이유까지. u32로 저장하는걸 feature로 두자.
 
-// Requirements
-use std::io::{Write, Read, Error};
-pub trait Save {
-    fn save_to<W>(&self, writer: &mut W) -> Result<(), Error> where
-        W: Write;
-    fn to_be_saved_size(&self) -> usize;
-}
-pub trait Load {
-    fn load_from<R>(reader: &mut R) -> Result<Self, Error> where
-        R: Read,
-        Self: Sized;
-}
-
-mod implementation;
-#[cfg(test)]
-mod tests;
+mod std_io_traits;
+pub use std_io_traits::{Save, Load};
+#[cfg(feature = "async-tokio")]
+mod tokio_io_traits;
+#[cfg(feature = "async-tokio")]
+pub use tokio_io_traits::{AsyncSave, AsyncLoad};
