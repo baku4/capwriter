@@ -10,13 +10,13 @@ use capwriter::{Save, Load};
 #[inline]
 fn save_usize_vec_using_capwriter(vec: &[usize]) -> Vec<u8> {
     let mut buffer = Vec::new();
-    vec.save_to(&mut buffer).unwrap();
+    vec.save_as_le(&mut buffer).unwrap();
     buffer
 }
 
 #[inline]
 fn load_usize_vec_using_capwriter(buffer: &[u8]) -> Vec<usize> {
-    let loaded = Vec::<usize>::load_from(&mut &buffer[..]).unwrap();
+    let loaded = Vec::<usize>::load_as_le(&mut &buffer[..]).unwrap();
     loaded
 }
 
