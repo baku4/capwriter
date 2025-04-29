@@ -1,7 +1,7 @@
 // For async I/O (tokio)
 use tokio::io::{AsyncWrite, AsyncRead};
-use std::future::Future;
 use std::io::Error;
+use std::pin::Pin;
 
 mod element; // AsyncSave + AsyncLoad
 mod slice; // AsyncSave
@@ -11,16 +11,16 @@ mod array; // AsyncSave + AsyncLoad
 mod tests;
 
 pub trait AsyncSave {
-    fn save_as_le<W>(&self, writer: &mut W) -> impl Future<Output = Result<(), Error>> + Send where
-        W: AsyncWrite + Unpin + Send;
-    fn save_as_be<W>(&self, writer: &mut W) -> impl Future<Output = Result<(), Error>> + Send where
-        W: AsyncWrite + Unpin + Send;
+    async fn save_as_le<'a, W>(&'a self, writer: Pin<&'a mut W>) -> Result<(), Error> where
+        W: AsyncWrite;
+    async fn save_as_be<'a, W>(&'a self, writer: Pin<&'a mut W>) -> Result<(), Error> where
+        W: AsyncWrite;
 }
 pub trait AsyncLoad {
-    fn load_as_le<R>(reader: &mut R) -> impl Future<Output = Result<Self, Error>> + Send where
-        R: AsyncRead + Unpin + Send,
+    async fn load_as_le<R>(reader: Pin<&mut R>) -> Result<Self, Error> where
+        R: AsyncRead,
         Self: Sized;
-    fn load_as_be<R>(reader: &mut R) -> impl Future<Output = Result<Self, Error>> + Send where
-        R: AsyncRead + Unpin + Send,
+    async fn load_as_be<R>(reader: Pin<&mut R>) -> Result<Self, Error> where
+        R: AsyncRead,
         Self: Sized;
 }

@@ -5,33 +5,24 @@ use bytemuck::{
 };
 use std::io::{Read, Write, Error};
 
-impl<const SIZE: usize, T: Pod> Save for [T; SIZE] {
-    fn save_as_le<W>(&self, writer: &mut W) -> Result<(), Error> where
-        W: Write
-    {
-        (&self[..]).save_as_le(writer)?;
-
-        Ok(())
+impl<const SIZE: usize, T: Save + Pod> Save for [T; SIZE] {
+    fn save_as_ne<W: Write>(&self, writer: &mut W) -> Result<(), Error> {
+        (&self[..]).save_as_ne(writer)
     }
-    fn save_as_be<W>(&self, writer: &mut W) -> Result<(), Error> where
-        W: Write
-    {
-        (&self[..]).save_as_be(writer)?;
-
-        Ok(())   
+    fn save_as_le<W: Write>(&self, writer: &mut W) -> Result<(), Error> {
+        (&self[..]).save_as_le(writer)
     }
-    fn to_be_saved_size(&self) -> usize {
-        (&self[..]).to_be_saved_size()
+    fn save_as_be<W: Write>(&self, writer: &mut W) -> Result<(), Error> {
+        (&self[..]).save_as_be(writer)
+    }
+    fn encoded_len(&self) -> usize {
+        (&self[..]).encoded_len()
     }
 }
 
-impl<const SIZE: usize, T: Pod> Load for [T; SIZE] {
-    fn load_as_le<R>(reader: &mut R) -> Result<Self, Error> where
-        R: Read,
-        Self: Sized,
-    {
-        
-        let size = u64::load_as_le(reader)? as usize;
+impl<const SIZE: usize, T: Load + Pod> Load for [T; SIZE] {
+    fn load_as_ne<R: Read>(reader: &mut R) -> Result<Self, Error> {
+        let size = u64::load_as_ne(reader)? as usize;
 
         if size != SIZE {
             return Err(Error::new(std::io::ErrorKind::InvalidData, "Size mismatch"));
@@ -42,19 +33,44 @@ impl<const SIZE: usize, T: Pod> Load for [T; SIZE] {
 
         Ok(buffer)
     }
-    fn load_as_be<R>(reader: &mut R) -> Result<Self, Error> where
-        R: Read,
-        Self: Sized,
-    {
-        let size = u64::load_as_be(reader)? as usize;
-
-        if size != SIZE {
-            return Err(Error::new(std::io::ErrorKind::InvalidData, "Size mismatch"));
+    fn load_as_le<R: Read>(reader: &mut R) -> Result<Self, Error> {
+        #[cfg(target_endian = "little")]
+        {
+            Self::load_as_ne(reader)
         }
-        let mut buffer = [T::zeroed(); SIZE];
-        let casted_buffer: &mut [u8] = as_u8_mut_buf(&mut buffer);
-        reader.read_exact(casted_buffer)?;
+        #[cfg(target_endian = "big")]
+        {
+            let size = u64::load_as_le(reader)? as usize;
 
-        Ok(buffer)
+            if size != SIZE {
+                return Err(Error::new(std::io::ErrorKind::InvalidData, "Size mismatch"));
+            }
+            let mut buffer = [T::zeroed(); SIZE];
+            for i in 0..size {
+                buffer[i] = T::load_as_le(reader)?;
+            }
+
+            Ok(buffer)
+        }
+    }
+    fn load_as_be<R: Read>(reader: &mut R) -> Result<Self, Error> {
+        #[cfg(target_endian = "little")]
+        {
+            let size = u64::load_as_be(reader)? as usize;
+
+            if size != SIZE {
+                return Err(Error::new(std::io::ErrorKind::InvalidData, "Size mismatch"));
+            }
+            let mut buffer = [T::zeroed(); SIZE];
+            for i in 0..size {
+                buffer[i] = T::load_as_be(reader)?;
+            }
+
+            Ok(buffer)
+        }
+        #[cfg(target_endian = "big")]
+        {
+            Self::load_as_ne(reader)
+        }
     }
 }

@@ -9,7 +9,7 @@ fn usage_on_readme() {
     // (1) Save
     let mut buffer = Vec::new();
     vec_to_save.save_as_le(&mut buffer).unwrap();
-    assert_eq!(vec_to_save.to_be_saved_size(), buffer.len()); // size can be estimated
+    assert_eq!(vec_to_save.encoded_len(), buffer.len()); // size can be estimated
     
     // (2) Load
     let vec_loaded = Vec::<i32>::load_as_le(&mut &buffer[..]).unwrap();
@@ -61,7 +61,7 @@ fn are_equal_saved_and_loaded_for_vector() {
 }
 
 #[test]
-fn is_accurate_to_be_saved_size_for_vector() {
+fn is_accurate_encoded_len_for_vector() {
     for n in 1..30 {
         macro_rules! test {
             ($ty:ty) => {
@@ -72,8 +72,8 @@ fn is_accurate_to_be_saved_size_for_vector() {
                 vec_to_save.save_as_le(&mut buffer_le).unwrap();
                 vec_to_save.save_as_be(&mut buffer_be).unwrap();
 
-                assert_eq!(vec_to_save.to_be_saved_size(), buffer_le.len());
-                assert_eq!(vec_to_save.to_be_saved_size(), buffer_be.len());
+                assert_eq!(vec_to_save.encoded_len(), buffer_le.len());
+                assert_eq!(vec_to_save.encoded_len(), buffer_be.len());
             };
         }
 
@@ -135,7 +135,7 @@ fn are_equal_saved_and_loaded_for_array() {
 }
 
 #[test]
-fn is_accurate_to_be_saved_size_for_array() {
+fn is_accurate_encoded_len_for_array() {
     macro_rules! test {
         ($ty:ty, [ $($size:literal),+ ]) => {
             $(
@@ -147,8 +147,8 @@ fn is_accurate_to_be_saved_size_for_array() {
                     array.save_as_le(&mut buffer_le).unwrap();
                     array.save_as_be(&mut buffer_be).unwrap();
 
-                    assert_eq!(array.to_be_saved_size(), buffer_le.len());
-                    assert_eq!(array.to_be_saved_size(), buffer_be.len());
+                    assert_eq!(array.encoded_len(), buffer_le.len());
+                    assert_eq!(array.encoded_len(), buffer_be.len());
                 }
             )*
         }

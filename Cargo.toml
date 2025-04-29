@@ -10,7 +10,7 @@ resolver = "2"
 
 [dependencies]
 bytemuck = "1.22"
-tokio = { version = "1", default-features = false, features=["io-util"], optional = true}
+tokio = { version = "1", default-features = false, features=["io-util", "macros"], optional = true}
 
 [dev-dependencies]
 rand = "0.8.5"
@@ -20,7 +20,7 @@ bincode = { version="2.0", features=["std"] }
 tokio = { version = "1", default-features = false, features = ["io-util", "rt", "macros", "rt-multi-thread"] }
 
 [features]
-default = []
+default = ["async-tokio"]
 async-tokio  = ["dep:tokio"]
 
 [package.metadata.docs.rs]
