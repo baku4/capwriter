@@ -51,6 +51,10 @@ impl<T: Load + Pod> Load for Vec<T> {
             let len = u64::load_as_be(reader)? as usize;
 
             let mut buffer = vec![T::zeroed(); len];
+            // TODO: 성능 비교 테스트 - 벤치
+            //  1) 지금 버전
+            //  2) reusable buffer 사용하기
+            //  3) bytemuck으로 캐스팅 후 데이터 뒤집는거
             for i in 0..len {
                 buffer[i] = T::load_as_be(reader)?;
             }
