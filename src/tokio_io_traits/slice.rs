@@ -16,6 +16,7 @@ impl<T: AsyncSave + Pod + Sync> AsyncSave for &[T] {
             Ok(())
         }
     }
+    #[allow(unused_mut)]
     fn save_as_le<'a, W>(&'a self, mut writer: Pin<&'a mut W>) -> impl Future<Output = Result<(), Error>> + Send where 
         W: AsyncWrite + Send
     {
@@ -35,6 +36,7 @@ impl<T: AsyncSave + Pod + Sync> AsyncSave for &[T] {
             }
         }
     }
+    #[allow(unused_mut)]
     fn save_as_be<'a, W>(&'a self, mut writer: Pin<&'a mut W>) -> impl Future<Output = Result<(), Error>> + Send where 
         W: AsyncWrite + Send
     {

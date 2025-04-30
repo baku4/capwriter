@@ -44,6 +44,7 @@ impl<const SIZE: usize, T: AsyncLoad + Pod + Send> AsyncLoad for [T; SIZE] {
             Ok(buffer)
         }
     }
+    #[allow(unused_mut)]
     fn load_as_le<R>(mut reader: Pin<&mut R>) -> impl Future<Output = Result<Self, Error>> + Send where
         R: AsyncRead + Send, Self: Sized
     {
@@ -68,6 +69,7 @@ impl<const SIZE: usize, T: AsyncLoad + Pod + Send> AsyncLoad for [T; SIZE] {
             }
         }
     }
+    #[allow(unused_mut)]
     fn load_as_be<R>(mut reader: Pin<&mut R>) -> impl Future<Output = Result<Self, Error>> + Send where
         R: AsyncRead + Send, Self: Sized
     {

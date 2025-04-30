@@ -45,6 +45,7 @@ impl<T: AsyncLoad + Pod + Send> AsyncLoad for Vec<T> {
             Ok(buffer)
         }
     }
+    #[allow(unused_mut)]
     fn load_as_le<R>(mut reader: Pin<&mut R>) -> impl Future<Output = Result<Self, Error>> + Send where
         R: AsyncRead + Send, Self: Sized
     {
@@ -65,6 +66,7 @@ impl<T: AsyncLoad + Pod + Send> AsyncLoad for Vec<T> {
             }
         }
     }
+    #[allow(unused_mut)]
     fn load_as_be<R>(mut reader: Pin<&mut R>) -> impl Future<Output = Result<Self, Error>> + Send where
         R: AsyncRead + Send, Self: Sized
     {

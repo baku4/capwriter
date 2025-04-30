@@ -9,11 +9,11 @@ let original: Vec<i32> = vec![1, 2, 3, 4, 5];
 
 // (1) Save
 let mut buf = Vec::new();
-original.save_as_le(&mut buf)?;
+original.save_as_ne(&mut buf)?;
 assert_eq!(original.to_be_saved_size(), buf.len()); // size can be estimated
 
 // (2) Load
-let decoded = Vec::<i32>::load_as_le(&mut &buffer).unwrap();
+let decoded = Vec::<i32>::load_as_ne(&mut &buffer).unwrap();
 assert_eq!(original, decoded);
 ```
 
