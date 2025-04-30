@@ -1,3 +1,4 @@
+use std::pin::Pin;
 use super::{AsyncSave, AsyncLoad};
 
 #[tokio::test(flavor = "multi_thread", worker_threads = 1)]
@@ -16,11 +17,11 @@ async fn are_equal_saved_and_loaded_for_vector() {
                     let mut buffer_le = Vec::new();
                     let mut buffer_be = Vec::new();
 
-                    vec.save_as_le(&mut buffer_le).await.unwrap();
-                    vec.save_as_be(&mut buffer_be).await.unwrap();
+                    vec.save_as_le(Pin::new(&mut buffer_le)).await.unwrap();
+                    vec.save_as_be(Pin::new(&mut buffer_be)).await.unwrap();
 
-                    let loaded_le = Vec::<$ty>::load_as_le(&mut &buffer_le[..]).await.unwrap();
-                    let loaded_be = Vec::<$ty>::load_as_be(&mut &buffer_be[..]).await.unwrap();
+                    let loaded_le = Vec::<$ty>::load_as_le(Pin::new(&mut &buffer_le[..])).await.unwrap();
+                    let loaded_be = Vec::<$ty>::load_as_be(Pin::new(&mut &buffer_be[..])).await.unwrap();
 
                     assert_eq!(vec, loaded_le);
                     assert_eq!(vec, loaded_be);
@@ -55,9 +56,9 @@ async fn are_equal_size_as_std_io_for_vector() {
                 let mut buffer_be_std_io: Vec<u8> = Vec::new();
 
                 let vec_to_save: Vec<$ty> = vec![0; n];
-                AsyncSave::save_as_le(&vec_to_save, &mut buffer_le).await.unwrap();
+                AsyncSave::save_as_le(&vec_to_save, Pin::new(&mut buffer_le)).await.unwrap();
                 Save::save_as_le(&vec_to_save, &mut buffer_le_std_io).unwrap();
-                AsyncSave::save_as_be(&vec_to_save, &mut buffer_be).await.unwrap();
+                AsyncSave::save_as_be(&vec_to_save, Pin::new(&mut buffer_be)).await.unwrap();
                 Save::save_as_be(&vec_to_save, &mut buffer_be_std_io).unwrap();
 
                 assert_eq!(buffer_le_std_io.len(), buffer_le.len());
@@ -95,11 +96,11 @@ async fn are_equal_saved_and_loaded_for_array() {
                         let mut buffer_le = Vec::new();
                         let mut buffer_be = Vec::new();
 
-                        array.save_as_le(&mut buffer_le).await.unwrap();
-                        array.save_as_be(&mut buffer_be).await.unwrap();
+                        array.save_as_le(Pin::new(&mut buffer_le)).await.unwrap();
+                        array.save_as_be(Pin::new(&mut buffer_be)).await.unwrap();
 
-                        let loaded_le = <[$ty; $size]>::load_as_le(&mut &buffer_le[..]).await.unwrap();
-                        let loaded_be = <[$ty; $size]>::load_as_be(&mut &buffer_be[..]).await.unwrap();
+                        let loaded_le = <[$ty; $size]>::load_as_le(Pin::new(&mut &buffer_le[..])).await.unwrap();
+                        let loaded_be = <[$ty; $size]>::load_as_be(Pin::new(&mut &buffer_be[..])).await.unwrap();
                         assert_eq!(array, loaded_le, "Failed at size {}", $size);
                         assert_eq!(array, loaded_be, "Failed at size {}", $size);
                     }
@@ -135,9 +136,9 @@ async fn are_equal_size_as_std_io_for_array() {
                     let mut buffer_be = Vec::new();
                     let mut buffer_be_std_io = Vec::new();
 
-                    AsyncSave::save_as_le(&array, &mut buffer_le).await.unwrap();
+                    AsyncSave::save_as_le(&array, Pin::new(&mut buffer_le)).await.unwrap();
                     Save::save_as_le(&array, &mut buffer_le_std_io).unwrap();
-                    AsyncSave::save_as_be(&array, &mut buffer_be).await.unwrap();
+                    AsyncSave::save_as_be(&array, Pin::new(&mut buffer_be)).await.unwrap();
                     Save::save_as_be(&array, &mut buffer_be_std_io).unwrap();
 
                     assert_eq!(buffer_le_std_io.len(), buffer_le.len());

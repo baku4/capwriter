@@ -358,142 +358,70 @@ impl Load for i128 {
 // usize
 impl Save for usize {
     fn save_as_ne<W: Write>(&self, writer: &mut W) -> Result<(), Error> {
-        #[cfg(target_pointer_width = "32")]
-        {
-            (*self as u32).save_as_ne(writer)
-        }
-        #[cfg(target_pointer_width = "64")]
-        {
-            (*self as u64).save_as_ne(writer)
-        }
+        writer.write_all(&self.to_ne_bytes())?;
+        Ok(())
     }
     fn save_as_le<W: Write>(&self, writer: &mut W) -> Result<(), Error> {
-        #[cfg(target_pointer_width = "32")]
-        {
-            (*self as u32).save_as_le(writer)
-        }
-        #[cfg(target_pointer_width = "64")]
-        {
-            (*self as u64).save_as_le(writer)
-        }
+        writer.write_all(&self.to_le_bytes())?;
+        Ok(())
     }
     fn save_as_be<W: Write>(&self, writer: &mut W) -> Result<(), Error> {
-        #[cfg(target_pointer_width = "32")]
-        {
-            (*self as u32).save_as_be(writer)
-        }
-        #[cfg(target_pointer_width = "64")]
-        {
-            (*self as u64).save_as_be(writer)
-        }
+        writer.write_all(&self.to_be_bytes())?;
+        Ok(())
     }
     fn encoded_len(&self) -> usize {
-        #[cfg(target_pointer_width = "32")]
-        return 4;
-        #[cfg(target_pointer_width = "64")]
-        return 8;
+        return std::mem::size_of::<usize>();
     }
 }
 impl Load for usize {
     fn load_as_ne<R: Read>(reader: &mut R) -> Result<Self, Error> {
-        #[cfg(target_pointer_width = "32")]
-        {
-            u32::load_as_ne(reader).map(|v| v as usize)
-        }
-        #[cfg(target_pointer_width = "64")]
-        {
-            u64::load_as_ne(reader).map(|v| v as usize)
-        }
+        let mut buffer = [0u8; std::mem::size_of::<usize>()];
+        reader.read_exact(&mut buffer)?;
+        Ok(usize::from_ne_bytes(buffer))
     }
     fn load_as_le<R: Read>(reader: &mut R) -> Result<Self, Error> {
-        #[cfg(target_pointer_width = "32")]
-        {
-            u32::load_as_le(reader).map(|v| v as usize)
-        }
-        #[cfg(target_pointer_width = "64")]
-        {
-            u64::load_as_le(reader).map(|v| v as usize)
-        }
+        let mut buffer = [0u8; std::mem::size_of::<usize>()];
+        reader.read_exact(&mut buffer)?;
+        Ok(usize::from_le_bytes(buffer))
     }
     fn load_as_be<R: Read>(reader: &mut R) -> Result<Self, Error> {
-        #[cfg(target_pointer_width = "32")]
-        {
-            u32::load_as_be(reader).map(|v| v as usize)
-        }
-        #[cfg(target_pointer_width = "64")]
-        {
-            u64::load_as_be(reader).map(|v| v as usize)
-        }
+        let mut buffer = [0u8; std::mem::size_of::<usize>()];
+        reader.read_exact(&mut buffer)?;
+        Ok(usize::from_be_bytes(buffer))
     }
 }
 // isize
 impl Save for isize {
     fn save_as_ne<W: Write>(&self, writer: &mut W) -> Result<(), Error> {
-        #[cfg(target_pointer_width = "32")]
-        {
-            (*self as i32).save_as_ne(writer)
-        }
-        #[cfg(target_pointer_width = "64")]
-        {
-            (*self as i64).save_as_ne(writer)
-        }
+        writer.write_all(&self.to_ne_bytes())?;
+        Ok(())
     }
     fn save_as_le<W: Write>(&self, writer: &mut W) -> Result<(), Error> {
-        #[cfg(target_pointer_width = "32")]
-        {
-            (*self as i32).save_as_le(writer)
-        }
-        #[cfg(target_pointer_width = "64")]
-        {
-            (*self as i64).save_as_le(writer)
-        }
+        writer.write_all(&self.to_le_bytes())?;
+        Ok(())
     }
     fn save_as_be<W: Write>(&self, writer: &mut W) -> Result<(), Error> {
-        #[cfg(target_pointer_width = "32")]
-        {
-            (*self as i32).save_as_be(writer)
-        }
-        #[cfg(target_pointer_width = "64")]
-        {
-            (*self as i64).save_as_be(writer)
-        }
+        writer.write_all(&self.to_be_bytes())?;
+        Ok(())
     }
     fn encoded_len(&self) -> usize {
-        #[cfg(target_pointer_width = "32")]
-        return 4;
-        #[cfg(target_pointer_width = "64")]
-        return 8;
+        return std::mem::size_of::<isize>();
     }
 }
 impl Load for isize {
     fn load_as_ne<R: Read>(reader: &mut R) -> Result<Self, Error> {
-        #[cfg(target_pointer_width = "32")]
-        {
-            i32::load_as_ne(reader).map(|v| v as isize)
-        }
-        #[cfg(target_pointer_width = "64")]
-        {
-            i64::load_as_ne(reader).map(|v| v as isize)
-        }
+        let mut buffer = [0u8; std::mem::size_of::<isize>()];
+        reader.read_exact(&mut buffer)?;
+        Ok(isize::from_ne_bytes(buffer))
     }
     fn load_as_le<R: Read>(reader: &mut R) -> Result<Self, Error> {
-        #[cfg(target_pointer_width = "32")]
-        {
-            i32::load_as_le(reader).map(|v| v as isize)
-        }
-        #[cfg(target_pointer_width = "64")]
-        {
-            i64::load_as_le(reader).map(|v| v as isize)
-        }
+        let mut buffer = [0u8; std::mem::size_of::<isize>()];
+        reader.read_exact(&mut buffer)?;
+        Ok(isize::from_le_bytes(buffer))
     }
     fn load_as_be<R: Read>(reader: &mut R) -> Result<Self, Error> {
-        #[cfg(target_pointer_width = "32")]
-        {
-            i32::load_as_be(reader).map(|v| v as isize)
-        }
-        #[cfg(target_pointer_width = "64")]
-        {
-            i64::load_as_be(reader).map(|v| v as isize)
-        }
+        let mut buffer = [0u8; std::mem::size_of::<isize>()];
+        reader.read_exact(&mut buffer)?;
+        Ok(isize::from_be_bytes(buffer))
     }
 }
