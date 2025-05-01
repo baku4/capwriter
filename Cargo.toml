@@ -1,9 +1,9 @@
 [package]
 name = "capwriter"
-version = "0.4.1"
+version = "0.4.2"
 authors = ["baku4 <bahkhun@gmail.com>"]
 description = "Fast saving and loading with annotating cap for vector and slice"
-edition = "2021"
+edition = "2024"
 readme = "README.md"
 license = "MIT"
 resolver = "2"
@@ -13,7 +13,7 @@ bytemuck = "1.22"
 tokio = { version = "1", default-features = false, features=["io-util", "macros"], optional = true}
 
 [dev-dependencies]
-rand = "0.8.5"
+rand = "0.9"
 criterion = "0.3.5"
 serde = "1.0.136"
 bincode = { version="2.0", features=["std"] }

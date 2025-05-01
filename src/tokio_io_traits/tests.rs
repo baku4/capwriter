@@ -20,7 +20,7 @@ async fn usage_on_readme() {
 #[tokio::test(flavor = "multi_thread", worker_threads = 1)]
 async fn are_equal_saved_and_loaded_for_vector() {
     use rand::Rng;
-    let mut rng = rand::thread_rng();
+    let mut rng = rand::rng();
 
     let vec_len_list: Vec<usize> = (0..10).map(|v| 2_i32.pow(v) as usize).collect();
     let n = 100;
@@ -28,8 +28,8 @@ async fn are_equal_saved_and_loaded_for_vector() {
     for len in vec_len_list {
         for _ in 0..n {
             macro_rules! test {
-                ($ty:ty) => {
-                    let vec: Vec<$ty> = (0..len).map(|_| { rng.gen() }).collect();
+                ($ty:ty, $sampling_ty:ty) => {
+                    let vec: Vec<$ty> = (0..len).map(|_| { rng.random::<$sampling_ty>() as $ty }).collect();
                     let mut buffer_le = Vec::new();
                     let mut buffer_be = Vec::new();
 
@@ -44,18 +44,20 @@ async fn are_equal_saved_and_loaded_for_vector() {
                 };
             }
             
-            test!(u8);
-            test!(u16);
-            test!(u32);
-            test!(u64);
-            test!(u128);
-            test!(usize);
-            test!(i8);
-            test!(i16);
-            test!(i32);
-            test!(i64);
-            test!(i128);
-            test!(isize);
+            test!(u8, u8);
+            test!(u16, u16);
+            test!(u32, u32);
+            test!(u64, u64);
+            test!(u128, u128);
+            test!(usize, u32);
+            test!(usize, u64);
+            test!(i8, i8);
+            test!(i16, i16);
+            test!(i32, i32);
+            test!(i64, i64);
+            test!(i128, i128);
+            test!(isize, i32);
+            test!(isize, i64);
         }
     }
 }
@@ -100,15 +102,15 @@ async fn are_equal_size_as_std_io_for_vector() {
 #[tokio::test(flavor = "multi_thread", worker_threads = 1)]
 async fn are_equal_saved_and_loaded_for_array() {
     use rand::Rng;
-    let mut rng = rand::thread_rng();
+    let mut rng = rand::rng();
     let n = 100;
 
     for _ in 0..n {
         macro_rules! test {
-            ($ty:ty, [ $($size:literal),+ ]) => {
+            ($ty:ty, $sampling_ty:ty, [ $($size:literal),+ ]) => {
                 $(
                     {
-                        let array: [$ty; $size] = [rng.gen(); $size];
+                        let array: [$ty; $size] = [rng.random::<$sampling_ty>() as $ty; $size];
                         let mut buffer_le = Vec::new();
                         let mut buffer_be = Vec::new();
 
@@ -124,18 +126,20 @@ async fn are_equal_saved_and_loaded_for_array() {
             }
         }
             
-        test!(u8, [1, 2, 4, 8, 16, 32, 64]);
-        test!(u16, [1, 2, 4, 8, 16, 32, 64]);
-        test!(u32, [1, 2, 4, 8, 16, 32, 64]);
-        test!(u64, [1, 2, 4, 8, 16, 32, 64]);
-        test!(u128, [1, 2, 4, 8, 16, 32, 64]);
-        test!(usize, [1, 2, 4, 8, 16, 32, 64]);
-        test!(i8, [1, 2, 4, 8, 16, 32, 64]);
-        test!(i16, [1, 2, 4, 8, 16, 32, 64]);
-        test!(i32, [1, 2, 4, 8, 16, 32, 64]);
-        test!(i64, [1, 2, 4, 8, 16, 32, 64]);
-        test!(i128, [1, 2, 4, 8, 16, 32, 64]);
-        test!(isize, [1, 2, 4, 8, 16, 32, 64]);
+        test!(u8, u8, [1, 2, 4, 8, 16, 32, 64]);
+        test!(u16, u16, [1, 2, 4, 8, 16, 32, 64]);
+        test!(u32, u32, [1, 2, 4, 8, 16, 32, 64]);
+        test!(u64, u64, [1, 2, 4, 8, 16, 32, 64]);
+        test!(u128, u128, [1, 2, 4, 8, 16, 32, 64]);
+        test!(usize, u32, [1, 2, 4, 8, 16, 32, 64]);
+        test!(usize, u64, [1, 2, 4, 8, 16, 32, 64]);
+        test!(i8, i8, [1, 2, 4, 8, 16, 32, 64]);
+        test!(i16, i16, [1, 2, 4, 8, 16, 32, 64]);
+        test!(i32, i32, [1, 2, 4, 8, 16, 32, 64]);
+        test!(i64, i64, [1, 2, 4, 8, 16, 32, 64]);
+        test!(i128, i128, [1, 2, 4, 8, 16, 32, 64]);
+        test!(isize, i32, [1, 2, 4, 8, 16, 32, 64]);
+        test!(isize, i64, [1, 2, 4, 8, 16, 32, 64]);
     }
 }
 

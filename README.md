@@ -2,6 +2,7 @@
 A fast serializer for `Vec`/slice with a lightweight cap" header.
 
 ## Usage
+### `Save` & `Load`
 ```rust
 use capwriter::{Save, Load};
 
@@ -9,12 +10,29 @@ let original: Vec<i32> = vec![1, 2, 3, 4, 5];
 
 // (1) Save
 let mut buf = Vec::new();
-original.save_as_ne(&mut buf)?;
-assert_eq!(original.to_be_saved_size(), buf.len()); // size can be estimated
+original.save_as_ne(&mut buf).unwrap();
+assert_eq!(original.encoded_len(), buf.len()); // size can be estimated
 
 // (2) Load
-let decoded = Vec::<i32>::load_as_ne(&mut &buffer).unwrap();
+let decoded = Vec::<i32>::load_as_ne(&mut &buf[..]).unwrap();
 assert_eq!(original, decoded);
+```
+
+### `AsyncSave` & `AsyncLoad` (on `async-tokio` feature)
+```rust
+use capwriter::{AsyncSave, AsyncLoad};
+use std::pin::Pin;
+
+let vec_to_save: Vec<i32> = vec![1, 2, 3, 4, 5];
+
+// (1) Save
+let mut buffer = Vec::new();
+vec_to_save.save_as_ne(Pin::new(&mut buffer)).await.unwrap();
+
+// (2) Load
+let vec_loaded = Vec::<i32>::load_as_ne(Pin::new(&mut &buffer[..])).await.unwrap();
+
+assert_eq!(vec_to_save, vec_loaded);
 ```
 
 ## Supported types
