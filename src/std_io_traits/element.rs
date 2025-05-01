@@ -425,3 +425,74 @@ impl Load for isize {
         Ok(isize::from_be_bytes(buffer))
     }
 }
+
+// f32
+impl Save for f32 {
+    fn save_as_ne<W: Write>(&self, writer: &mut W) -> Result<(), Error> {
+        writer.write_all(&self.to_ne_bytes())?;
+        Ok(())
+    }
+    fn save_as_le<W: Write>(&self, writer: &mut W) -> Result<(), Error> {
+        writer.write_all(&self.to_le_bytes())?;
+        Ok(())
+    }
+    fn save_as_be<W: Write>(&self, writer: &mut W) -> Result<(), Error> {
+        writer.write_all(&self.to_be_bytes())?;
+        Ok(())
+    }
+    fn encoded_len(&self) -> usize {
+        4
+    }
+}
+impl Load for f32 {
+    fn load_as_ne<R: Read>(reader: &mut R) -> Result<Self, Error> {
+        let mut buf = [0u8; 4];
+        reader.read_exact(&mut buf)?;
+        Ok(f32::from_ne_bytes(buf))
+    }
+    fn load_as_le<R: Read>(reader: &mut R) -> Result<Self, Error> {
+        let mut buf = [0u8; 4];
+        reader.read_exact(&mut buf)?;
+        Ok(f32::from_le_bytes(buf))
+    }
+    fn load_as_be<R: Read>(reader: &mut R) -> Result<Self, Error> {
+        let mut buf = [0u8; 4];
+        reader.read_exact(&mut buf)?;
+        Ok(f32::from_be_bytes(buf))
+    }
+}
+// f64
+impl Save for f64 {
+    fn save_as_ne<W: Write>(&self, writer: &mut W) -> Result<(), Error> {
+        writer.write_all(&self.to_ne_bytes())?;
+        Ok(())
+    }
+    fn save_as_le<W: Write>(&self, writer: &mut W) -> Result<(), Error> {
+        writer.write_all(&self.to_le_bytes())?;
+        Ok(())
+    }
+    fn save_as_be<W: Write>(&self, writer: &mut W) -> Result<(), Error> {
+        writer.write_all(&self.to_be_bytes())?;
+        Ok(())
+    }
+    fn encoded_len(&self) -> usize {
+        8
+    }
+}
+impl Load for f64 {
+    fn load_as_ne<R: Read>(reader: &mut R) -> Result<Self, Error> {
+        let mut buf = [0u8; 8];
+        reader.read_exact(&mut buf)?;
+        Ok(f64::from_ne_bytes(buf))
+    }
+    fn load_as_le<R: Read>(reader: &mut R) -> Result<Self, Error> {
+        let mut buf = [0u8; 8];
+        reader.read_exact(&mut buf)?;
+        Ok(f64::from_le_bytes(buf))
+    }
+    fn load_as_be<R: Read>(reader: &mut R) -> Result<Self, Error> {
+        let mut buf = [0u8; 8];
+        reader.read_exact(&mut buf)?;
+        Ok(f64::from_be_bytes(buf))
+    }
+}

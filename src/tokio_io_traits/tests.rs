@@ -2,6 +2,22 @@ use std::pin::Pin;
 use super::{AsyncSave, AsyncLoad};
 
 #[tokio::test(flavor = "multi_thread", worker_threads = 1)]
+async fn usage_on_readme() {
+    use crate::{AsyncSave, AsyncLoad};
+    use std::pin::Pin;
+
+    let original: Vec<i32> = vec![1, 2, 3, 4, 5];
+    
+    // (1) Save
+    let mut buf = Vec::new();
+    original.save_as_ne(Pin::new(&mut buf)).await.unwrap();
+
+    // (2) Load
+    let decoded = Vec::<i32>::load_as_ne(Pin::new(&mut &buf[..])).await.unwrap();
+    assert_eq!(original, decoded);
+}
+
+#[tokio::test(flavor = "multi_thread", worker_threads = 1)]
 async fn are_equal_saved_and_loaded_for_vector() {
     use rand::Rng;
     let mut rng = rand::thread_rng();

@@ -7,7 +7,7 @@ use std::io::{Write, Error};
 
 const SIZE_OF_LENGTH: usize = 8;
 
-impl<T: Save + Pod> Save for &[T] {
+impl<T: Save + Pod> Save for [T] {
     fn save_as_ne<W: Write>(&self, writer: &mut W) -> Result<(), Error> {
         let length = self.len() as u64;
         writer.write_all(&length.to_ne_bytes())?;

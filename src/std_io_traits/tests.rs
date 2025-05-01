@@ -4,17 +4,16 @@ use super::{Save, Load};
 fn usage_on_readme() {
     use crate::{Save, Load};
 
-    let vec_to_save: Vec<i32> = vec![1, 2, 3, 4, 5];
-    
+    let original: Vec<i32> = vec![1, 2, 3, 4, 5];
+
     // (1) Save
-    let mut buffer = Vec::new();
-    vec_to_save.save_as_le(&mut buffer).unwrap();
-    assert_eq!(vec_to_save.encoded_len(), buffer.len()); // size can be estimated
+    let mut buf = Vec::new();
+    original.save_as_ne(&mut buf).unwrap();
+    assert_eq!(original.encoded_len(), buf.len()); // size can be estimated
     
     // (2) Load
-    let vec_loaded = Vec::<i32>::load_as_le(&mut &buffer[..]).unwrap();
-    
-    assert_eq!(vec_to_save, vec_loaded);
+    let decoded = Vec::<i32>::load_as_ne(&mut &buf[..]).unwrap();
+    assert_eq!(original, decoded);
 }
 
 #[test]

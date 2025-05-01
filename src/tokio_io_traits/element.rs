@@ -6,7 +6,7 @@ use tokio::io::{AsyncRead, AsyncReadExt, AsyncWrite, AsyncWriteExt};
 
 // u8
 impl AsyncSave for u8 {
-    fn save_as_ne<'a, W>(&'a self, mut writer: Pin<&'a mut W>) -> impl Future<Output = Result<(), Error>> + Send where
+    fn save_as_ne<W>(&self, mut writer: Pin<&mut W>) -> impl Future<Output = Result<(), Error>> + Send where
         W: AsyncWrite + Send,
     {
         async move {
@@ -14,12 +14,12 @@ impl AsyncSave for u8 {
             Ok(())
         }
     }
-    fn save_as_le<'a, W>(&'a self, writer: Pin<&'a mut W>) -> impl Future<Output = Result<(), Error>> + Send where
+    fn save_as_le<W>(&self, writer: Pin<&mut W>) -> impl Future<Output = Result<(), Error>> + Send where
         W: AsyncWrite + Send,
     {
         self.save_as_ne(writer)
     }
-    fn save_as_be<'a, W>(&'a self, writer: Pin<&'a mut W>) -> impl Future<Output = Result<(), Error>> + Send where
+    fn save_as_be<W>(&self, writer: Pin<&mut W>) -> impl Future<Output = Result<(), Error>> + Send where
         W: AsyncWrite + Send,
     {
         self.save_as_ne(writer)
@@ -51,7 +51,7 @@ impl AsyncLoad for u8 {
 }
 // i8
 impl AsyncSave for i8 {
-    fn save_as_ne<'a, W>(&'a self, mut writer: Pin<&'a mut W>) -> impl Future<Output = Result<(), Error>> + Send where
+    fn save_as_ne<W>(&self, mut writer: Pin<&mut W>) -> impl Future<Output = Result<(), Error>> + Send where
         W: AsyncWrite + Send,
     {
         async move {
@@ -59,12 +59,12 @@ impl AsyncSave for i8 {
             Ok(())
         }
     }
-    fn save_as_le<'a, W>(&'a self, writer: Pin<&'a mut W>) -> impl Future<Output = Result<(), Error>> + Send where
+    fn save_as_le<W>(&self, writer: Pin<&mut W>) -> impl Future<Output = Result<(), Error>> + Send where
         W: AsyncWrite + Send,
     {
         self.save_as_ne(writer)
     }
-    fn save_as_be<'a, W>(&'a self, writer: Pin<&'a mut W>) -> impl Future<Output = Result<(), Error>> + Send where
+    fn save_as_be<W>(&self, writer: Pin<&mut W>) -> impl Future<Output = Result<(), Error>> + Send where
         W: AsyncWrite + Send,
     {
         self.save_as_ne(writer)
@@ -97,7 +97,7 @@ impl AsyncLoad for i8 {
 
 // u16
 impl AsyncSave for u16 {
-    fn save_as_ne<'a, W>(&'a self, mut writer: Pin<&'a mut W>) -> impl Future<Output = Result<(), Error>> + Send where
+    fn save_as_ne<W>(&self, mut writer: Pin<&mut W>) -> impl Future<Output = Result<(), Error>> + Send where
         W: AsyncWrite + Send,
     {
         async move {
@@ -105,7 +105,7 @@ impl AsyncSave for u16 {
             Ok(())
         }
     }
-    fn save_as_le<'a, W>(&'a self, mut writer: Pin<&'a mut W>) -> impl Future<Output = Result<(), Error>> + Send where
+    fn save_as_le<W>(&self, mut writer: Pin<&mut W>) -> impl Future<Output = Result<(), Error>> + Send where
         W: AsyncWrite + Send,
     {
         async move {
@@ -113,7 +113,7 @@ impl AsyncSave for u16 {
             Ok(())
         }
     }
-    fn save_as_be<'a, W>(&'a self, mut writer: Pin<&'a mut W>) -> impl Future<Output = Result<(), Error>> + Send where
+    fn save_as_be<W>(&self, mut writer: Pin<&mut W>) -> impl Future<Output = Result<(), Error>> + Send where
         W: AsyncWrite + Send,
     {
         async move {
@@ -157,7 +157,7 @@ impl AsyncLoad for u16 {
 
 // i16
 impl AsyncSave for i16 {
-    fn save_as_ne<'a, W>(&'a self, mut writer: Pin<&'a mut W>) -> impl Future<Output = Result<(), Error>> + Send where
+    fn save_as_ne<W>(&self, mut writer: Pin<&mut W>) -> impl Future<Output = Result<(), Error>> + Send where
         W: AsyncWrite + Send,
     {
         async move {
@@ -165,7 +165,7 @@ impl AsyncSave for i16 {
             Ok(())
         }
     }
-    fn save_as_le<'a, W>(&'a self, mut writer: Pin<&'a mut W>) -> impl Future<Output = Result<(), Error>> + Send where
+    fn save_as_le<W>(&self, mut writer: Pin<&mut W>) -> impl Future<Output = Result<(), Error>> + Send where
         W: AsyncWrite + Send,
     {
         async move {
@@ -173,7 +173,7 @@ impl AsyncSave for i16 {
             Ok(())
         }
     }
-    fn save_as_be<'a, W>(&'a self, mut writer: Pin<&'a mut W>) -> impl Future<Output = Result<(), Error>> + Send where
+    fn save_as_be<W>(&self, mut writer: Pin<&mut W>) -> impl Future<Output = Result<(), Error>> + Send where
         W: AsyncWrite + Send,
     {
         async move {
@@ -217,7 +217,7 @@ impl AsyncLoad for i16 {
 
 // u32
 impl AsyncSave for u32 {
-    fn save_as_ne<'a, W>(&'a self, mut writer: Pin<&'a mut W>) -> impl Future<Output = Result<(), Error>> + Send where
+    fn save_as_ne<W>(&self, mut writer: Pin<&mut W>) -> impl Future<Output = Result<(), Error>> + Send where
         W: AsyncWrite + Send,
     {
         async move {
@@ -225,7 +225,7 @@ impl AsyncSave for u32 {
             Ok(())
         }
     }
-    fn save_as_le<'a, W>(&'a self, mut writer: Pin<&'a mut W>) -> impl Future<Output = Result<(), Error>> + Send where
+    fn save_as_le<W>(&self, mut writer: Pin<&mut W>) -> impl Future<Output = Result<(), Error>> + Send where
         W: AsyncWrite + Send,
     {
         async move {
@@ -233,7 +233,7 @@ impl AsyncSave for u32 {
             Ok(())
         }
     }
-    fn save_as_be<'a, W>(&'a self, mut writer: Pin<&'a mut W>) -> impl Future<Output = Result<(), Error>> + Send where
+    fn save_as_be<W>(&self, mut writer: Pin<&mut W>) -> impl Future<Output = Result<(), Error>> + Send where
         W: AsyncWrite + Send,
     {
         async move {
@@ -276,7 +276,7 @@ impl AsyncLoad for u32 {
 }
 // i32
 impl AsyncSave for i32 {
-    fn save_as_ne<'a, W>(&'a self, mut writer: Pin<&'a mut W>) -> impl Future<Output = Result<(), Error>> + Send where
+    fn save_as_ne<W>(&self, mut writer: Pin<&mut W>) -> impl Future<Output = Result<(), Error>> + Send where
         W: AsyncWrite + Send,
     {
         async move {
@@ -284,7 +284,7 @@ impl AsyncSave for i32 {
             Ok(())
         }
     }
-    fn save_as_le<'a, W>(&'a self, mut writer: Pin<&'a mut W>) -> impl Future<Output = Result<(), Error>> + Send where
+    fn save_as_le<W>(&self, mut writer: Pin<&mut W>) -> impl Future<Output = Result<(), Error>> + Send where
         W: AsyncWrite + Send,
     {
         async move {
@@ -292,7 +292,7 @@ impl AsyncSave for i32 {
             Ok(())
         }
     }
-    fn save_as_be<'a, W>(&'a self, mut writer: Pin<&'a mut W>) -> impl Future<Output = Result<(), Error>> + Send where
+    fn save_as_be<W>(&self, mut writer: Pin<&mut W>) -> impl Future<Output = Result<(), Error>> + Send where
         W: AsyncWrite + Send,
     {
         async move {
@@ -336,7 +336,7 @@ impl AsyncLoad for i32 {
 
 // u64
 impl AsyncSave for u64 {
-    fn save_as_ne<'a, W>(&'a self, mut writer: Pin<&'a mut W>) -> impl Future<Output = Result<(), Error>> + Send where
+    fn save_as_ne<W>(&self, mut writer: Pin<&mut W>) -> impl Future<Output = Result<(), Error>> + Send where
         W: AsyncWrite + Send,
     {
         async move {
@@ -344,7 +344,7 @@ impl AsyncSave for u64 {
             Ok(())
         }
     }
-    fn save_as_le<'a, W>(&'a self, mut writer: Pin<&'a mut W>) -> impl Future<Output = Result<(), Error>> + Send where
+    fn save_as_le<W>(&self, mut writer: Pin<&mut W>) -> impl Future<Output = Result<(), Error>> + Send where
         W: AsyncWrite + Send,
     {
         async move {
@@ -352,7 +352,7 @@ impl AsyncSave for u64 {
             Ok(())
         }
     }
-    fn save_as_be<'a, W>(&'a self, mut writer: Pin<&'a mut W>) -> impl Future<Output = Result<(), Error>> + Send where
+    fn save_as_be<W>(&self, mut writer: Pin<&mut W>) -> impl Future<Output = Result<(), Error>> + Send where
         W: AsyncWrite + Send,
     {
         async move {
@@ -395,7 +395,7 @@ impl AsyncLoad for u64 {
 }
 // i64
 impl AsyncSave for i64 {
-    fn save_as_ne<'a, W>(&'a self, mut writer: Pin<&'a mut W>) -> impl Future<Output = Result<(), Error>> + Send where
+    fn save_as_ne<W>(&self, mut writer: Pin<&mut W>) -> impl Future<Output = Result<(), Error>> + Send where
         W: AsyncWrite + Send,
     {
         async move {
@@ -403,7 +403,7 @@ impl AsyncSave for i64 {
             Ok(())
         }
     }
-    fn save_as_le<'a, W>(&'a self, mut writer: Pin<&'a mut W>) -> impl Future<Output = Result<(), Error>> + Send where
+    fn save_as_le<W>(&self, mut writer: Pin<&mut W>) -> impl Future<Output = Result<(), Error>> + Send where
         W: AsyncWrite + Send,
     {
         async move {
@@ -411,7 +411,7 @@ impl AsyncSave for i64 {
             Ok(())
         }
     }
-    fn save_as_be<'a, W>(&'a self, mut writer: Pin<&'a mut W>) -> impl Future<Output = Result<(), Error>> + Send where
+    fn save_as_be<W>(&self, mut writer: Pin<&mut W>) -> impl Future<Output = Result<(), Error>> + Send where
         W: AsyncWrite + Send,
     {
         async move {
@@ -455,7 +455,7 @@ impl AsyncLoad for i64 {
 
 // u128
 impl AsyncSave for u128 {
-    fn save_as_ne<'a, W>(&'a self, mut writer: Pin<&'a mut W>) -> impl Future<Output = Result<(), Error>> + Send where
+    fn save_as_ne<W>(&self, mut writer: Pin<&mut W>) -> impl Future<Output = Result<(), Error>> + Send where
         W: AsyncWrite + Send,
     {
         async move {
@@ -463,7 +463,7 @@ impl AsyncSave for u128 {
             Ok(())
         }
     }
-    fn save_as_le<'a, W>(&'a self, mut writer: Pin<&'a mut W>) -> impl Future<Output = Result<(), Error>> + Send where
+    fn save_as_le<W>(&self, mut writer: Pin<&mut W>) -> impl Future<Output = Result<(), Error>> + Send where
         W: AsyncWrite + Send,
     {
         async move {
@@ -471,7 +471,7 @@ impl AsyncSave for u128 {
             Ok(())
         }
     }
-    fn save_as_be<'a, W>(&'a self, mut writer: Pin<&'a mut W>) -> impl Future<Output = Result<(), Error>> + Send where
+    fn save_as_be<W>(&self, mut writer: Pin<&mut W>) -> impl Future<Output = Result<(), Error>> + Send where
         W: AsyncWrite + Send,
     {
         async move {
@@ -514,7 +514,7 @@ impl AsyncLoad for u128 {
 }
 // i128
 impl AsyncSave for i128 {
-    fn save_as_ne<'a, W>(&'a self, mut writer: Pin<&'a mut W>) -> impl Future<Output = Result<(), Error>> + Send where
+    fn save_as_ne<W>(&self, mut writer: Pin<&mut W>) -> impl Future<Output = Result<(), Error>> + Send where
         W: AsyncWrite + Send,
     {
         async move {
@@ -522,7 +522,7 @@ impl AsyncSave for i128 {
             Ok(())
         }
     }
-    fn save_as_le<'a, W>(&'a self, mut writer: Pin<&'a mut W>) -> impl Future<Output = Result<(), Error>> + Send where
+    fn save_as_le<W>(&self, mut writer: Pin<&mut W>) -> impl Future<Output = Result<(), Error>> + Send where
         W: AsyncWrite + Send,
     {
         async move {
@@ -530,7 +530,7 @@ impl AsyncSave for i128 {
             Ok(())
         }
     }
-    fn save_as_be<'a, W>(&'a self, mut writer: Pin<&'a mut W>) -> impl Future<Output = Result<(), Error>> + Send where
+    fn save_as_be<W>(&self, mut writer: Pin<&mut W>) -> impl Future<Output = Result<(), Error>> + Send where
         W: AsyncWrite + Send,
     {
         async move {
@@ -574,7 +574,7 @@ impl AsyncLoad for i128 {
 
 // usize
 impl AsyncSave for usize {
-    fn save_as_ne<'a, W>(&'a self, mut writer: Pin<&'a mut W>) -> impl Future<Output = Result<(), Error>> + Send where
+    fn save_as_ne<W>(&self, mut writer: Pin<&mut W>) -> impl Future<Output = Result<(), Error>> + Send where
         W: AsyncWrite + Send,
     {
         async move {
@@ -582,7 +582,7 @@ impl AsyncSave for usize {
             Ok(())
         }
     }
-    fn save_as_le<'a, W>(&'a self, mut writer: Pin<&'a mut W>) -> impl Future<Output = Result<(), Error>> + Send where
+    fn save_as_le<W>(&self, mut writer: Pin<&mut W>) -> impl Future<Output = Result<(), Error>> + Send where
         W: AsyncWrite + Send,
     {
         async move {
@@ -590,7 +590,7 @@ impl AsyncSave for usize {
             Ok(())
         }
     }
-    fn save_as_be<'a, W>(&'a self, mut writer: Pin<&'a mut W>) -> impl Future<Output = Result<(), Error>> + Send where
+    fn save_as_be<W>(&self, mut writer: Pin<&mut W>) -> impl Future<Output = Result<(), Error>> + Send where
         W: AsyncWrite + Send,
     {
         async move {
@@ -633,7 +633,7 @@ impl AsyncLoad for usize {
 }
 // isize
 impl AsyncSave for isize {
-    fn save_as_ne<'a, W>(&'a self, mut writer: Pin<&'a mut W>) -> impl Future<Output = Result<(), Error>> + Send where
+    fn save_as_ne<W>(&self, mut writer: Pin<&mut W>) -> impl Future<Output = Result<(), Error>> + Send where
         W: AsyncWrite + Send,
     {
         async move {
@@ -641,7 +641,7 @@ impl AsyncSave for isize {
             Ok(())
         }
     }
-    fn save_as_le<'a, W>(&'a self, mut writer: Pin<&'a mut W>) -> impl Future<Output = Result<(), Error>> + Send where
+    fn save_as_le<W>(&self, mut writer: Pin<&mut W>) -> impl Future<Output = Result<(), Error>> + Send where
         W: AsyncWrite + Send,
     {
         async move {
@@ -649,7 +649,7 @@ impl AsyncSave for isize {
             Ok(())
         }
     }
-    fn save_as_be<'a, W>(&'a self, mut writer: Pin<&'a mut W>) -> impl Future<Output = Result<(), Error>> + Send where
+    fn save_as_be<W>(&self, mut writer: Pin<&mut W>) -> impl Future<Output = Result<(), Error>> + Send where
         W: AsyncWrite + Send,
     {
         async move {
@@ -693,7 +693,7 @@ impl AsyncLoad for isize {
 
 // f32
 impl AsyncSave for f32 {
-    fn save_as_ne<'a, W>(&'a self, mut writer: Pin<&'a mut W>) -> impl Future<Output = Result<(), Error>> + Send where
+    fn save_as_ne<W>(&self, mut writer: Pin<&mut W>) -> impl Future<Output = Result<(), Error>> + Send where
         W: AsyncWrite + Send,
     {
         async move {
@@ -701,7 +701,7 @@ impl AsyncSave for f32 {
             Ok(())
         }
     }
-    fn save_as_le<'a, W>(&'a self, mut writer: Pin<&'a mut W>) -> impl Future<Output = Result<(), Error>> + Send where
+    fn save_as_le<W>(&self, mut writer: Pin<&mut W>) -> impl Future<Output = Result<(), Error>> + Send where
         W: AsyncWrite + Send,
     {
         async move {
@@ -709,7 +709,7 @@ impl AsyncSave for f32 {
             Ok(())
         }
     }
-    fn save_as_be<'a, W>(&'a self, mut writer: Pin<&'a mut W>) -> impl Future<Output = Result<(), Error>> + Send where
+    fn save_as_be<W>(&self, mut writer: Pin<&mut W>) -> impl Future<Output = Result<(), Error>> + Send where
         W: AsyncWrite + Send,
     {
         async move {
@@ -752,7 +752,7 @@ impl AsyncLoad for f32 {
 }
 // f64
 impl AsyncSave for f64 {
-    fn save_as_ne<'a, W>(&'a self, mut writer: Pin<&'a mut W>) -> impl Future<Output = Result<(), Error>> + Send where
+    fn save_as_ne<W>(&self, mut writer: Pin<&mut W>) -> impl Future<Output = Result<(), Error>> + Send where
         W: AsyncWrite + Send,
     {
         async move {
@@ -760,7 +760,7 @@ impl AsyncSave for f64 {
             Ok(())
         }
     }
-    fn save_as_le<'a, W>(&'a self, mut writer: Pin<&'a mut W>) -> impl Future<Output = Result<(), Error>> + Send where
+    fn save_as_le<W>(&self, mut writer: Pin<&mut W>) -> impl Future<Output = Result<(), Error>> + Send where
         W: AsyncWrite + Send,
     {
         async move {
@@ -768,7 +768,7 @@ impl AsyncSave for f64 {
             Ok(())
         }
     }
-    fn save_as_be<'a, W>(&'a self, mut writer: Pin<&'a mut W>) -> impl Future<Output = Result<(), Error>> + Send where
+    fn save_as_be<W>(&self, mut writer: Pin<&mut W>) -> impl Future<Output = Result<(), Error>> + Send where
         W: AsyncWrite + Send,
     {
         async move {

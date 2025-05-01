@@ -6,7 +6,7 @@ use tokio::io::{AsyncWrite, AsyncRead, AsyncReadExt};
 use bytemuck::Pod;
 
 impl<T: AsyncSave + Pod + Sync> AsyncSave for Vec<T> {
-    fn save_as_ne<'a, W>(&'a self, writer: Pin<&'a mut W>) -> impl Future<Output = Result<(), Error>> + Send where 
+    fn save_as_ne<W>(&self, writer: Pin<&mut W>) -> impl Future<Output = Result<(), Error>> + Send where 
         W: AsyncWrite + Send
     {
         async move {
@@ -15,7 +15,7 @@ impl<T: AsyncSave + Pod + Sync> AsyncSave for Vec<T> {
         }
     }
 
-    fn save_as_le<'a, W>(&'a self, writer: Pin<&'a mut W>) -> impl Future<Output = Result<(), Error>> + Send where
+    fn save_as_le<W>(&self, writer: Pin<&mut W>) -> impl Future<Output = Result<(), Error>> + Send where
         W: AsyncWrite + Send
     {
         async move {
@@ -23,7 +23,7 @@ impl<T: AsyncSave + Pod + Sync> AsyncSave for Vec<T> {
             slice.save_as_le(writer).await
         }
     }
-    fn save_as_be<'a, W>(&'a self, writer: Pin<&'a mut W>) -> impl Future<Output = Result<(), Error>> + Send where
+    fn save_as_be<W>(&self, writer: Pin<&mut W>) -> impl Future<Output = Result<(), Error>> + Send where
         W: AsyncWrite + Send
     {
         async move {

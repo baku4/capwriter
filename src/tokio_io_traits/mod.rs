@@ -12,11 +12,11 @@ mod array;   // AsyncSave + AsyncLoad
 mod tests;
 
 pub trait AsyncSave {
-    fn save_as_ne<'a, W >(&'a self, writer: Pin<&'a mut W>) -> impl Future<Output = Result<(), Error>> + Send where 
+    fn save_as_ne<W>(&self, writer: Pin<&mut W>) -> impl Future<Output = Result<(), Error>> + Send where 
         W: AsyncWrite + Send;
-    fn save_as_le<'a, W>(&'a self, writer: Pin<&'a mut W>) -> impl Future<Output = Result<(), Error>> + Send where 
+    fn save_as_le<W>(&self, writer: Pin<&mut W>) -> impl Future<Output = Result<(), Error>> + Send where 
         W: AsyncWrite + Send;
-    fn save_as_be<'a, W>(&'a self, writer: Pin<&'a mut W>) -> impl Future<Output = Result<(), Error>> + Send where 
+    fn save_as_be<W>(&self, writer: Pin<&mut W>) -> impl Future<Output = Result<(), Error>> + Send where 
         W: AsyncWrite + Send;
 }
 pub trait AsyncLoad {

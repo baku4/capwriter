@@ -5,8 +5,8 @@ use std::pin::Pin;
 use tokio::io::{AsyncWrite, AsyncWriteExt};
 use bytemuck::Pod;
 
-impl<T: AsyncSave + Pod + Sync> AsyncSave for &[T] {
-    fn save_as_ne<'a, W >(&'a self, mut writer: Pin<&'a mut W>) -> impl Future<Output = Result<(), Error>> + Send where 
+impl<T: AsyncSave + Pod + Sync> AsyncSave for [T] {
+    fn save_as_ne<W>(&self, mut writer: Pin<&mut W>) -> impl Future<Output = Result<(), Error>> + Send where 
         W: AsyncWrite + Send
     {
         async move {
@@ -17,7 +17,7 @@ impl<T: AsyncSave + Pod + Sync> AsyncSave for &[T] {
         }
     }
     #[allow(unused_mut)]
-    fn save_as_le<'a, W>(&'a self, mut writer: Pin<&'a mut W>) -> impl Future<Output = Result<(), Error>> + Send where 
+    fn save_as_le<W>(&self, mut writer: Pin<&mut W>) -> impl Future<Output = Result<(), Error>> + Send where 
         W: AsyncWrite + Send
     {
         async move {
@@ -37,7 +37,7 @@ impl<T: AsyncSave + Pod + Sync> AsyncSave for &[T] {
         }
     }
     #[allow(unused_mut)]
-    fn save_as_be<'a, W>(&'a self, mut writer: Pin<&'a mut W>) -> impl Future<Output = Result<(), Error>> + Send where 
+    fn save_as_be<W>(&self, mut writer: Pin<&mut W>) -> impl Future<Output = Result<(), Error>> + Send where 
         W: AsyncWrite + Send
     {
         async move {
