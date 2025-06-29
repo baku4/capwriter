@@ -40,7 +40,7 @@ assert_eq!(vec_to_save, vec_loaded);
   - `Vec<T>`, `&[T]`, `[T; usize]`
 - trait `Load` can be used in:
   - `Vec<T>`, `[T; usize]`
-- For the `T`: `()`, `u8`, `u16`, `u32`, `u64`, `u128`, `usize`, `i8`, `i16`, `i32`, `i64`, `i128`, `isize`, `f32`, `f64`, `Option<T>`, `PhantomData<T>`
+- For the `T`: `()`, `u8`, `u16`, `u32`, `u64`, `u128`, `usize`, `i8`, `i16`, `i32`, `i64`, `i128`, `isize`, `f32`, `f64`, `Option<T>`, `PhantomData<T>`, tuples up to 12 elements
   - impl the trait `Pod (Plain Old Data)` in `bytemuck`(https://crates.io/crates/bytemuck) crate.
 
 ## Bench
