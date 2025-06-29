@@ -10,7 +10,7 @@ resolver = "2"
 
 [dependencies]
 bytemuck = "1.22"
-tokio = { version = "1", default-features = false, features=["io-util", "macros"], optional = true}
+tokio = { version = "1", default-features = false, features=["io-util"], optional = true }
 
 [dev-dependencies]
 rand = "0.9"

@@ -181,3 +181,116 @@ async fn are_equal_size_as_std_io_for_array() {
     test!(i128, [1, 2, 4, 8, 16, 32, 64]);
     test!(isize, [1, 2, 4, 8, 16, 32, 64]);
 }
+
+#[tokio::test(flavor = "multi_thread", worker_threads = 1)]
+async fn are_equal_saved_and_loaded_for_tuples() {
+    use rand::Rng;
+    let mut rng = rand::rng();
+    let n = 100;
+
+    for _ in 0..n {
+        // Test tuple of size 2
+        {
+            let tuple = (rng.random::<u32>(), rng.random::<i64>());
+            let mut buffer_le = Vec::new();
+            let mut buffer_be = Vec::new();
+
+            tuple.save_as_le(Pin::new(&mut buffer_le)).await.unwrap();
+            tuple.save_as_be(Pin::new(&mut buffer_be)).await.unwrap();
+
+            let loaded_le = <(u32, i64)>::load_as_le(Pin::new(&mut &buffer_le[..])).await.unwrap();
+            let loaded_be = <(u32, i64)>::load_as_be(Pin::new(&mut &buffer_be[..])).await.unwrap();
+
+            assert_eq!(tuple, loaded_le);
+            assert_eq!(tuple, loaded_be);
+        }
+
+        // Test tuple of size 3
+        {
+            let tuple = (rng.random::<u8>(), rng.random::<i16>(), rng.random::<u32>());
+            let mut buffer_le = Vec::new();
+            let mut buffer_be = Vec::new();
+
+            tuple.save_as_le(Pin::new(&mut buffer_le)).await.unwrap();
+            tuple.save_as_be(Pin::new(&mut buffer_be)).await.unwrap();
+
+            let loaded_le = <(u8, i16, u32)>::load_as_le(Pin::new(&mut &buffer_le[..])).await.unwrap();
+            let loaded_be = <(u8, i16, u32)>::load_as_be(Pin::new(&mut &buffer_be[..])).await.unwrap();
+
+            assert_eq!(tuple, loaded_le);
+            assert_eq!(tuple, loaded_be);
+        }
+
+        // Test tuple of size 4
+        {
+            let tuple = (rng.random::<u16>(), rng.random::<i32>(), rng.random::<u64>(), rng.random::<i8>());
+            let mut buffer_le = Vec::new();
+            let mut buffer_be = Vec::new();
+
+            tuple.save_as_le(Pin::new(&mut buffer_le)).await.unwrap();
+            tuple.save_as_be(Pin::new(&mut buffer_be)).await.unwrap();
+
+            let loaded_le = <(u16, i32, u64, i8)>::load_as_le(Pin::new(&mut &buffer_le[..])).await.unwrap();
+            let loaded_be = <(u16, i32, u64, i8)>::load_as_be(Pin::new(&mut &buffer_be[..])).await.unwrap();
+
+            assert_eq!(tuple, loaded_le);
+            assert_eq!(tuple, loaded_be);
+        }
+    }
+}
+
+#[tokio::test(flavor = "multi_thread", worker_threads = 1)]
+async fn are_equal_size_as_std_io_for_tuples() {
+    use crate::std_io_traits::Save;
+
+    // Test tuple of size 2
+    {
+        let tuple = (1u32, 2i64);
+        let mut buffer_le = Vec::new();
+        let mut buffer_le_std_io = Vec::new();
+        let mut buffer_be = Vec::new();
+        let mut buffer_be_std_io = Vec::new();
+
+        AsyncSave::save_as_le(&tuple, Pin::new(&mut buffer_le)).await.unwrap();
+        Save::save_as_le(&tuple, &mut buffer_le_std_io).unwrap();
+        AsyncSave::save_as_be(&tuple, Pin::new(&mut buffer_be)).await.unwrap();
+        Save::save_as_be(&tuple, &mut buffer_be_std_io).unwrap();
+
+        assert_eq!(buffer_le_std_io.len(), buffer_le.len());
+        assert_eq!(buffer_be_std_io.len(), buffer_be.len());
+    }
+
+    // Test tuple of size 3
+    {
+        let tuple = (1u8, 2i16, 3u32);
+        let mut buffer_le = Vec::new();
+        let mut buffer_le_std_io = Vec::new();
+        let mut buffer_be = Vec::new();
+        let mut buffer_be_std_io = Vec::new();
+
+        AsyncSave::save_as_le(&tuple, Pin::new(&mut buffer_le)).await.unwrap();
+        Save::save_as_le(&tuple, &mut buffer_le_std_io).unwrap();
+        AsyncSave::save_as_be(&tuple, Pin::new(&mut buffer_be)).await.unwrap();
+        Save::save_as_be(&tuple, &mut buffer_be_std_io).unwrap();
+
+        assert_eq!(buffer_le_std_io.len(), buffer_le.len());
+        assert_eq!(buffer_be_std_io.len(), buffer_be.len());
+    }
+
+    // Test tuple of size 4
+    {
+        let tuple = (1u16, 2i32, 3u64, 4i8);
+        let mut buffer_le = Vec::new();
+        let mut buffer_le_std_io = Vec::new();
+        let mut buffer_be = Vec::new();
+        let mut buffer_be_std_io = Vec::new();
+
+        AsyncSave::save_as_le(&tuple, Pin::new(&mut buffer_le)).await.unwrap();
+        Save::save_as_le(&tuple, &mut buffer_le_std_io).unwrap();
+        AsyncSave::save_as_be(&tuple, Pin::new(&mut buffer_be)).await.unwrap();
+        Save::save_as_be(&tuple, &mut buffer_be_std_io).unwrap();
+
+        assert_eq!(buffer_le_std_io.len(), buffer_le.len());
+        assert_eq!(buffer_be_std_io.len(), buffer_be.len());
+    }
+}

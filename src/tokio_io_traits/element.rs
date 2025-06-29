@@ -809,3 +809,91 @@ impl AsyncLoad for f64 {
         }
     }
 }
+
+// Tuple implementations
+macro_rules! impl_tuple {
+    ($($idx:tt : $ty:ident),+) => {
+        impl<$($ty: AsyncSave + Send + Sync),+> AsyncSave for ($($ty,)+) {
+            fn save_as_ne<W>(&self, mut writer: Pin<&mut W>) -> impl Future<Output = Result<(), Error>> + Send where
+                W: AsyncWrite + Send,
+            {
+                async move {
+                    $(
+                        self.$idx.save_as_ne(writer.as_mut()).await?;
+                    )+
+                    Ok(())
+                }
+            }
+
+            fn save_as_le<W>(&self, mut writer: Pin<&mut W>) -> impl Future<Output = Result<(), Error>> + Send where
+                W: AsyncWrite + Send,
+            {
+                async move {
+                    $(
+                        self.$idx.save_as_le(writer.as_mut()).await?;
+                    )+
+                    Ok(())
+                }
+            }
+
+            fn save_as_be<W>(&self, mut writer: Pin<&mut W>) -> impl Future<Output = Result<(), Error>> + Send where
+                W: AsyncWrite + Send,
+            {
+                async move {
+                    $(
+                        self.$idx.save_as_be(writer.as_mut()).await?;
+                    )+
+                    Ok(())
+                }
+            }
+        }
+
+        impl<$($ty: AsyncLoad + Send),+> AsyncLoad for ($($ty,)+) {
+            fn load_as_ne<R>(mut reader: Pin<&mut R>) -> impl Future<Output = Result<Self, Error>> + Send where
+                R: AsyncRead + Send,
+                Self: Sized,
+            {
+                async move {
+                    Ok(($(
+                        $ty::load_as_ne(reader.as_mut()).await?,
+                    )+))
+                }
+            }
+
+            fn load_as_le<R>(mut reader: Pin<&mut R>) -> impl Future<Output = Result<Self, Error>> + Send where
+                R: AsyncRead + Send,
+                Self: Sized,
+            {
+                async move {
+                    Ok(($(
+                        $ty::load_as_le(reader.as_mut()).await?,
+                    )+))
+                }
+            }
+
+            fn load_as_be<R>(mut reader: Pin<&mut R>) -> impl Future<Output = Result<Self, Error>> + Send where
+                R: AsyncRead + Send,
+                Self: Sized,
+            {
+                async move {
+                    Ok(($(
+                        $ty::load_as_be(reader.as_mut()).await?,
+                    )+))
+                }
+            }
+        }
+    }
+}
+
+impl_tuple!(0: T1);
+impl_tuple!(0: T1, 1: T2);
+impl_tuple!(0: T1, 1: T2, 2: T3);
+impl_tuple!(0: T1, 1: T2, 2: T3, 3: T4);
+impl_tuple!(0: T1, 1: T2, 2: T3, 3: T4, 4: T5);
+impl_tuple!(0: T1, 1: T2, 2: T3, 3: T4, 4: T5, 5: T6);
+impl_tuple!(0: T1, 1: T2, 2: T3, 3: T4, 4: T5, 5: T6, 6: T7);
+impl_tuple!(0: T1, 1: T2, 2: T3, 3: T4, 4: T5, 5: T6, 6: T7, 7: T8);
+impl_tuple!(0: T1, 1: T2, 2: T3, 3: T4, 4: T5, 5: T6, 6: T7, 7: T8, 8: T9);
+impl_tuple!(0: T1, 1: T2, 2: T3, 3: T4, 4: T5, 5: T6, 6: T7, 7: T8, 8: T9, 9: T10);
+impl_tuple!(0: T1, 1: T2, 2: T3, 3: T4, 4: T5, 5: T6, 6: T7, 7: T8, 8: T9, 9: T10, 10: T11);
+impl_tuple!(0: T1, 1: T2, 2: T3, 3: T4, 4: T5, 5: T6, 6: T7, 7: T8, 8: T9, 9: T10, 10: T11, 11: T12);

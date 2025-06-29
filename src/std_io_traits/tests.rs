@@ -172,3 +172,92 @@ fn is_accurate_encoded_len_for_array() {
     test!(i128, [1, 2, 4, 8, 16, 32, 64]);
     test!(isize, [1, 2, 4, 8, 16, 32, 64]);
 }
+
+#[test]
+fn are_equal_saved_and_loaded_for_tuples() {
+    use rand::Rng;
+    let mut rng = rand::rng();
+    let n = 100;
+
+    for _ in 0..n {
+        // Test tuple of size 2
+        {
+            let tuple = (rng.random::<u32>(), rng.random::<i64>());
+            let mut buffer_le = Vec::new();
+            let mut buffer_be = Vec::new();
+
+            tuple.save_as_le(&mut buffer_le).unwrap();
+            tuple.save_as_be(&mut buffer_be).unwrap();
+
+            let loaded_le = <(u32, i64)>::load_as_le(&mut &buffer_le[..]).unwrap();
+            let loaded_be = <(u32, i64)>::load_as_be(&mut &buffer_be[..]).unwrap();
+
+            assert_eq!(tuple, loaded_le);
+            assert_eq!(tuple, loaded_be);
+        }
+
+        // Test tuple of size 3
+        {
+            let tuple = (rng.random::<u8>(), rng.random::<i16>(), rng.random::<u32>());
+            let mut buffer_le = Vec::new();
+            let mut buffer_be = Vec::new();
+
+            tuple.save_as_le(&mut buffer_le).unwrap();
+            tuple.save_as_be(&mut buffer_be).unwrap();
+
+            let loaded_le = <(u8, i16, u32)>::load_as_le(&mut &buffer_le[..]).unwrap();
+            let loaded_be = <(u8, i16, u32)>::load_as_be(&mut &buffer_be[..]).unwrap();
+
+            assert_eq!(tuple, loaded_le);
+            assert_eq!(tuple, loaded_be);
+        }
+
+        // Test tuple of size 4
+        {
+            let tuple = (rng.random::<u16>(), rng.random::<i32>(), rng.random::<u64>(), rng.random::<i8>());
+            let mut buffer_le = Vec::new();
+            let mut buffer_be = Vec::new();
+
+            tuple.save_as_le(&mut buffer_le).unwrap();
+            tuple.save_as_be(&mut buffer_be).unwrap();
+
+            let loaded_le = <(u16, i32, u64, i8)>::load_as_le(&mut &buffer_le[..]).unwrap();
+            let loaded_be = <(u16, i32, u64, i8)>::load_as_be(&mut &buffer_be[..]).unwrap();
+
+            assert_eq!(tuple, loaded_le);
+            assert_eq!(tuple, loaded_be);
+        }
+    }
+}
+
+#[test]
+fn is_accurate_encoded_len_for_tuples() {
+    let tuple2 = (1u32, 2i64);
+    let tuple3 = (1u8, 2i16, 3u32);
+    let tuple4 = (1u16, 2i32, 3u64, 4i8);
+
+    let mut buffer_le = Vec::new();
+    let mut buffer_be = Vec::new();
+
+    // Test tuple of size 2
+    tuple2.save_as_le(&mut buffer_le).unwrap();
+    tuple2.save_as_be(&mut buffer_be).unwrap();
+    assert_eq!(tuple2.encoded_len(), buffer_le.len());
+    assert_eq!(tuple2.encoded_len(), buffer_be.len());
+    buffer_le.clear();
+    buffer_be.clear();
+
+    // Test tuple of size 3
+    tuple3.save_as_le(&mut buffer_le).unwrap();
+    tuple3.save_as_be(&mut buffer_be).unwrap();
+    assert_eq!(tuple3.encoded_len(), buffer_le.len());
+    assert_eq!(tuple3.encoded_len(), buffer_be.len());
+    buffer_le.clear();
+    buffer_be.clear();
+
+    // Test tuple of size 4
+    tuple4.save_as_le(&mut buffer_le).unwrap();
+    tuple4.save_as_be(&mut buffer_be).unwrap();
+    assert_eq!(tuple4.encoded_len(), buffer_le.len());
+    assert_eq!(tuple4.encoded_len(), buffer_be.len());
+}

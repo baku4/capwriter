@@ -496,3 +496,68 @@ impl Load for f64 {
         Ok(f64::from_be_bytes(buf))
     }
 }
+
+// Tuple implementations
+macro_rules! impl_tuple {
+    ($($idx:tt : $ty:ident),+) => {
+        impl<$($ty: Save),+> Save for ($($ty,)+) {
+            fn save_as_ne<W: Write>(&self, writer: &mut W) -> Result<(), Error> {
+                $(
+                    self.$idx.save_as_ne(writer)?;
+                )+
+                Ok(())
+            }
+
+            fn save_as_le<W: Write>(&self, writer: &mut W) -> Result<(), Error> {
+                $(
+                    self.$idx.save_as_le(writer)?;
+                )+
+                Ok(())
+            }
+
+            fn save_as_be<W: Write>(&self, writer: &mut W) -> Result<(), Error> {
+                $(
+                    self.$idx.save_as_be(writer)?;
+                )+
+                Ok(())
+            }
+
+            fn encoded_len(&self) -> usize {
+                0 $(+ self.$idx.encoded_len())+
+            }
+        }
+
+        impl<$($ty: Load),+> Load for ($($ty,)+) {
+            fn load_as_ne<R: Read>(reader: &mut R) -> Result<Self, Error> {
+                Ok(($(
+                    $ty::load_as_ne(reader)?,
+                )+))
+            }
+
+            fn load_as_le<R: Read>(reader: &mut R) -> Result<Self, Error> {
+                Ok(($(
+                    $ty::load_as_le(reader)?,
+                )+))
+            }
+
+            fn load_as_be<R: Read>(reader: &mut R) -> Result<Self, Error> {
+                Ok(($(
+                    $ty::load_as_be(reader)?,
+                )+))
+            }
+        }
+    }
+}
+
+impl_tuple!(0: T1);
+impl_tuple!(0: T1, 1: T2);
+impl_tuple!(0: T1, 1: T2, 2: T3);
+impl_tuple!(0: T1, 1: T2, 2: T3, 3: T4);
+impl_tuple!(0: T1, 1: T2, 2: T3, 3: T4, 4: T5);
+impl_tuple!(0: T1, 1: T2, 2: T3, 3: T4, 4: T5, 5: T6);
+impl_tuple!(0: T1, 1: T2, 2: T3, 3: T4, 4: T5, 5: T6, 6: T7);
+impl_tuple!(0: T1, 1: T2, 2: T3, 3: T4, 4: T5, 5: T6, 6: T7, 7: T8);
+impl_tuple!(0: T1, 1: T2, 2: T3, 3: T4, 4: T5, 5: T6, 6: T7, 7: T8, 8: T9);
+impl_tuple!(0: T1, 1: T2, 2: T3, 3: T4, 4: T5, 5: T6, 6: T7, 7: T8, 8: T9, 9: T10);
+impl_tuple!(0: T1, 1: T2, 2: T3, 3: T4, 4: T5, 5: T6, 6: T7, 7: T8, 8: T9, 9: T10, 10: T11);
+impl_tuple!(0: T1, 1: T2, 2: T3, 3: T4, 4: T5, 5: T6, 6: T7, 7: T8, 8: T9, 9: T10, 10: T11, 11: T12);
